@@ -4,20 +4,20 @@ package com.h2n.nihongorenshuu.entity;
  * Created by Huyen on 11/4/2016.
  */
 
-public class Sentences {
+public class Sentence {
     private  int id;
     private  int grammarExplainId;
     private  String jpSentence;
     private  String vnSentence;
 
-    public Sentences(int id, int grammarExplainId, String jpSentence, String vnSentence) {
+    public Sentence(int id, int grammarExplainId, String jpSentence, String vnSentence) {
         this.id = id;
         this.grammarExplainId = grammarExplainId;
         this.jpSentence = jpSentence;
         this.vnSentence = vnSentence;
     }
 
-    public Sentences(int grammarExplainId, String jpSentence, String vnSentence) {
+    public Sentence(int grammarExplainId, String jpSentence, String vnSentence) {
         this.grammarExplainId = grammarExplainId;
         this.jpSentence = jpSentence;
         this.vnSentence = vnSentence;

@@ -4,20 +4,20 @@ package com.h2n.nihongorenshuu.entity;
  * Created by Huyen on 11/4/2016.
  */
 
-public class Grammars {
+public class Grammar {
     private int id;
     private String level;
     private String name;
     private int unit;
 
-    public Grammars(int id, String level, String name, int unit) {
+    public Grammar(int id, String level, String name, int unit) {
         this.id = id;
         this.level = level;
         this.name = name;
         this.unit = unit;
     }
 
-    public Grammars(String level, String name, int unit) {
+    public Grammar(String level, String name, int unit) {
         this.level = level;
         this.name = name;
         this.unit = unit;
