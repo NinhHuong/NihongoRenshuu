@@ -64,4 +64,19 @@ public class SentencePart {
     public void setPartIndex(int partIndex) {
         this.partIndex = partIndex;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public boolean Compare(SentencePart obj2) {
+        return this.getId() == obj2.getId() && this.getSentenceId() == obj2.getSentenceId() &&
+                this.getPartContent().equals(obj2.getPartContent()) && this.getPartIndex() == obj2.getPartIndex();
+    }
+
+    public  boolean CompareIgnoreId(SentencePart obj2) {
+        return this.getSentenceId() == obj2.getSentenceId() &&
+                this.getPartContent().equals(obj2.getPartContent()) && this.getPartIndex() == obj2.getPartIndex();
+    }
 }
