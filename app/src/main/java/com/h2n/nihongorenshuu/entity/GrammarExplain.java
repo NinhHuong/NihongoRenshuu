@@ -9,6 +9,9 @@ public class GrammarExplain {
     private  int grammarStructureId;
     private  String explanation;
 
+    public GrammarExplain() {
+    }
+
     public GrammarExplain(int id, int grammarStructureId, String explaination) {
         this.id = id;
         this.grammarStructureId = grammarStructureId;

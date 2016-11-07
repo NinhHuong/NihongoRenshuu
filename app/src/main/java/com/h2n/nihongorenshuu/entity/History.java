@@ -12,6 +12,9 @@ public class History {
     private  boolean isGame;
     private  boolean isCorrect;
 
+    public History() {
+    }
+
     public History(int id, int sentenceId, String userTrans, String time, boolean isGame, boolean isCorrect) {
         this.id = id;
         this.sentenceId = sentenceId;
