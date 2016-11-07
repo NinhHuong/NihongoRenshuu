@@ -10,6 +10,17 @@ public class SentencePart {
     private  String partContent;
     private  int partIndex;
 
+    public static final String TABLE = "SentenceParts";
+
+    // Labels Table Columns names
+    public static final String KEY_Id = "id";
+    public static final String KEY_SentenceId = "sentenceId";
+    public static final String KEY_PartContent = "partContent";
+    public static final String KEY_PartIndex = "partIndex";
+
+    public SentencePart() {
+    }
+
     public SentencePart(int id, int sentenceId, String partContent, int partIndex) {
         this.id = id;
         this.sentenceId = sentenceId;
