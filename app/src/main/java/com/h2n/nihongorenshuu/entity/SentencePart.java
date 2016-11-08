@@ -70,12 +70,12 @@ public class SentencePart {
         return super.toString();
     }
 
-    public boolean Compare(SentencePart obj2) {
+    public boolean compare(SentencePart obj2) {
         return this.getId() == obj2.getId() && this.getSentenceId() == obj2.getSentenceId() &&
                 this.getPartContent().equals(obj2.getPartContent()) && this.getPartIndex() == obj2.getPartIndex();
     }
 
-    public  boolean CompareIgnoreId(SentencePart obj2) {
+    public  boolean compareIgnoreId(SentencePart obj2) {
         return this.getSentenceId() == obj2.getSentenceId() &&
                 this.getPartContent().equals(obj2.getPartContent()) && this.getPartIndex() == obj2.getPartIndex();
     }

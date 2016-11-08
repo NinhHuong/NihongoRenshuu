@@ -39,7 +39,7 @@ public class SentencePartRepo {
         values.put(SentencePart.KEY_PartIndex, sp.getPartIndex());
 
         //update
-        db.update(SentencePart.TABLE, values, SentencePart.KEY_Id, new String[sp.getId()]);
+        db.update(SentencePart.TABLE, values, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
         System.out.println("update success to table " + SentencePart.TABLE);
         DatabaseManager.getInstance().closeDatabase();
     }
@@ -48,7 +48,7 @@ public class SentencePartRepo {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(SentencePart.TABLE, SentencePart.KEY_Id, new String[sp.getId()]);
+        db.delete(SentencePart.TABLE, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
     }
 
     public void deleteTable( ) {
@@ -118,11 +118,12 @@ public class SentencePartRepo {
         insert(insertObj);
         List<SentencePart> listInsert = getSentencePartBySelectQuery("SELECT * FROM " + SentencePart.TABLE + " ORDER BY id DESC LIMIT 1;");
         if(listInsert.size() == 1) {
-            if(insertObj.CompareIgnoreId(listInsert.get(0))) {
+            if(insertObj.compareIgnoreId(listInsert.get(0))) {
                 System.out.println("insert success " + insertObj.toString() + " into " + SentencePart.TABLE);
             } else {
                 System.out.println("have problem when insert into " + SentencePart.TABLE);
             }
+        } else{
             System.out.println(SentencePart.TABLE + "have no record");
         }
         //delete
@@ -135,21 +136,18 @@ public class SentencePartRepo {
         //update
         List<SentencePart> listUpdate = getSentencePartBySelectQuery("SELECT * FROM " + SentencePart.TABLE + " ORDER BY RANDOM() LIMIT 1;");
         SentencePart updateObj = listUpdate.get(0);
-        insertObj.setPartContent(listUpdate.get(0).getPartContent() + " test");
-        update(insertObj);
+        updateObj.setPartContent("test_" + listUpdate.get(0).getPartContent());
+        update(updateObj);
 
         listUpdate.clear();
         listUpdate = getSentencePartBySelectQuery("SELECT * FROM " + SentencePart.TABLE + " WHERE " + SentencePart.KEY_Id + " = " + updateObj.getId());
-        if(insertObj.Compare(listUpdate.get(0))) {
+        if(updateObj.compare(listUpdate.get(0))) {
             System.out.println("update success " + insertObj.toString() + " into " + SentencePart.TABLE);
         } else {
             System.out.println("have problem when update " + SentencePart.TABLE);
         }
 
-        delete(listUpdate.get(0));
-        listUpdate = getSentencePartBySelectQuery("SELECT * FROM " + SentencePart.TABLE + " WHERE " + SentencePart.KEY_Id + " = " + listUpdate.get(0).getId());
-        if(listUpdate.size() == 0) {
-            System.out.println("delete success");
-        }
+        //de-update
+        updateObj.setPartContent(updateObj.getPartContent().substring(5, updateObj.getPartContent().length()));
     }
 }
