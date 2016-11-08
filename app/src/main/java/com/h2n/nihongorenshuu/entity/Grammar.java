@@ -5,19 +5,29 @@ package com.h2n.nihongorenshuu.entity;
  */
 
 public class Grammar {
+    public static final String TABLE = "Grammars";
+
+    // Labels Table Columns names
+    public static final String KEY_Id = "id";
+    public static final String KEY_Level = "grammarLevel";
+    public static final String KEY_Name = "name";
+    public static final String KEY_Unit = "unit";
+
     private int id;
-    private String level;
+    private int level;
     private String name;
     private int unit;
 
-    public Grammar(int id, String level, String name, int unit) {
+    public Grammar(){}
+
+    public Grammar(int id, int level, String name, int unit) {
         this.id = id;
         this.level = level;
         this.name = name;
         this.unit = unit;
     }
 
-    public Grammar(String level, String name, int unit) {
+    public Grammar(int level, String name, int unit) {
         this.level = level;
         this.name = name;
         this.unit = unit;
@@ -31,11 +41,11 @@ public class Grammar {
         this.id = id;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
@@ -53,5 +63,20 @@ public class Grammar {
 
     public void setUnit(int unit) {
         this.unit = unit;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public boolean compare(Grammar obj2){
+        return this.getId() == obj2.getId() && this.getLevel() == obj2.getLevel() && this.getName().equals(obj2.getName())
+                && this.getUnit() == obj2.getUnit();
+    }
+
+    public boolean compareIgnoreId(Grammar obj2) {
+        return this.getLevel() == obj2.getLevel() && this.getName().equals(obj2.getName())
+                && this.getUnit() == obj2.getUnit();
     }
 }
