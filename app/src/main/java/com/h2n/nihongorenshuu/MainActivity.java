@@ -4,8 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.h2n.nihongorenshuu.database.DatabaseHelper;
-import com.h2n.nihongorenshuu.entity.SentencePart;
+import com.h2n.nihongorenshuu.entity.GrammarExplain;
+import com.h2n.nihongorenshuu.entity.GrammarStructure;
+import com.h2n.nihongorenshuu.repo.GrammarExplainRepo;
+import com.h2n.nihongorenshuu.repo.GrammarRepo;
+import com.h2n.nihongorenshuu.repo.GrammarStructureRepo;
 import com.h2n.nihongorenshuu.repo.SentencePartRepo;
+import com.h2n.nihongorenshuu.repo.SentenceRepo;
 
 import java.io.IOException;
 
@@ -25,8 +30,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //test get, insert, update to table SentenPart
-        SentencePartRepo spr = new SentencePartRepo();
-        spr.test();
+//        SentencePartRepo spr = new SentencePartRepo();
+//        spr.test();
+        //test connect db Grammar
+//        GrammarRepo gr = new GrammarRepo();
+//        gr.test();
+        //test connect db Grammar Explain
+//        GrammarExplainRepo ger = new GrammarExplainRepo();
+//        ger.test();
+        //test connect db Grammar Explain
+//        GrammarStructureRepo ger = new GrammarStructureRepo();
+//        ger.test();
+        // test connect to db Sentence
+        SentenceRepo sr = new SentenceRepo();
+        sr.test();
 
     }
 }

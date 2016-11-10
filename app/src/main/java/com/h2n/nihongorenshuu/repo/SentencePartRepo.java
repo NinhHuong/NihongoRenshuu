@@ -85,6 +85,30 @@ public class SentencePartRepo {
         return list;
     }
 
+    public SentencePart getSentencePartById(int id){
+
+
+        SentencePart sp = new SentencePart();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT * FROM " + SentencePart.TABLE + " WHERE id = " + id;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                sp.setId(cursor.getInt(cursor.getColumnIndex(SentencePart.KEY_Id)));
+                sp.setSentenceId(cursor.getInt(cursor.getColumnIndex(SentencePart.KEY_SentenceId)));
+                sp.setPartContent(cursor.getString(cursor.getColumnIndex(SentencePart.KEY_PartContent)));
+                sp.setPartIndex(cursor.getInt(cursor.getColumnIndex(SentencePart.KEY_PartIndex)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+
+        return sp;
+    }
+
     public List<SentencePart> getSentencePartBySelectQuery(String selectQuery){
 
         List<SentencePart> list = new ArrayList<SentencePart>();
@@ -113,6 +137,8 @@ public class SentencePartRepo {
     }
 
     public void test(){
+        //get by id
+        getSentencePartById(1);
         //insert
         SentencePart insertObj = new SentencePart(1, "a", 1);
         insert(insertObj);

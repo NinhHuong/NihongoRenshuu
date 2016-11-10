@@ -36,7 +36,7 @@ public class GrammarRepo {
         values.put(Grammar.KEY_Name, gr.getName());
 
         //update
-        db.update(Grammar.TABLE, values, Grammar.KEY_Id, new String[gr.getId()]);
+        db.update(Grammar.TABLE, values, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
         System.out.println("update success to table " + Grammar.TABLE);
         DatabaseManager.getInstance().closeDatabase();
     }
@@ -45,7 +45,7 @@ public class GrammarRepo {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(Grammar.TABLE, Grammar.KEY_Id, new String[gr.getId()]);
+        db.delete(Grammar.TABLE, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
     }
 
     public void deleteTable( ) {
@@ -82,6 +82,31 @@ public class GrammarRepo {
         return list;
     }
 
+    public Grammar getGrammarById(int id){
+
+        Grammar gr = new Grammar();
+
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT * FROM " + Grammar.TABLE + " WHERE id = " + id;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                gr.setId(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Id)));
+                gr.setLevel(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Level)));
+                gr.setName(cursor.getString(cursor.getColumnIndex(Grammar.KEY_Name)));
+                gr.setUnit(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Unit)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+        System.out.println("get success " + gr.toString() + " from " + Grammar.TABLE);
+
+        return gr;
+    }
+
     public List<Grammar> getGrammarBySelectQuery(String selectQuery){
 
         List<Grammar> list = new ArrayList<Grammar>();
@@ -110,6 +135,8 @@ public class GrammarRepo {
     }
 
     public void test(){
+        // get by id
+        getGrammarById(1);
         //insert
         Grammar insertObj = new Grammar(1, "g", 1);
         insert(insertObj);
