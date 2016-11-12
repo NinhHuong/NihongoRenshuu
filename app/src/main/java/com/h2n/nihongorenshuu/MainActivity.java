@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 //        GrammarStructureRepo ger = new GrammarStructureRepo();
 //        ger.test();
         // test connect to db Sentence
-        SentenceRepo sr = new SentenceRepo();
-        sr.test();
+//        SentenceRepo sr = new SentenceRepo();
+//        sr.test();
 
     }
 }
