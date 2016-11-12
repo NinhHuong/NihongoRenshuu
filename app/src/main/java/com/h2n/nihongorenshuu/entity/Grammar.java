@@ -67,7 +67,7 @@ public class Grammar {
 
     @Override
     public String toString() {
-        return "Grammar (" + id + ", " + level + ", " + name + ", " + unit + ")";
+        return "Grammar (" + id + ", " + level + ", " + name + ", " + unit + ")\n";
     }
 
     public boolean compare(Grammar obj2){

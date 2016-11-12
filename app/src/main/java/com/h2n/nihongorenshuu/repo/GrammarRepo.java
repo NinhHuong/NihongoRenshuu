@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class GrammarRepo {
-    public void insert(Grammar gr) {
+    public int insert(Grammar gr) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(Grammar.KEY_Level, gr.getLevel());
@@ -23,12 +23,25 @@ public class GrammarRepo {
         values.put(Grammar.KEY_Name, gr.getName());
 
         //insert
-        db.insert(Grammar.TABLE, null, values);
-        System.out.println("insert success to table " + Grammar.TABLE);
+        int result = (int)db.insert(Grammar.TABLE, null, values);
+
+        //getId inserted
+        int insertedId = -1;
+        if(result != -1) {
+            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + Grammar.TABLE + "\"";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
         DatabaseManager.getInstance().closeDatabase();
+        return insertedId;
     }
 
-    public void update(Grammar gr) {
+    public int update(Grammar gr) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(Grammar.KEY_Level, gr.getLevel());
@@ -36,16 +49,19 @@ public class GrammarRepo {
         values.put(Grammar.KEY_Name, gr.getName());
 
         //update
-        db.update(Grammar.TABLE, values, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
+        int result = (int)db.update(Grammar.TABLE, values, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
         System.out.println("update success to table " + Grammar.TABLE);
         DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
-    public void delete(Grammar gr) {
+    public int delete(Grammar gr) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(Grammar.TABLE, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
+        int result = (int)db.delete(Grammar.TABLE, Grammar.KEY_Id + " = ?", new String[]{String.valueOf(gr.getId())});
+        DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
     public void deleteTable( ) {
@@ -107,12 +123,12 @@ public class GrammarRepo {
         return gr;
     }
 
-    public List<Grammar> getGrammarBySelectQuery(String selectQuery){
+    public List<Grammar> getGrammarBySelectQuery(String condition){
 
         List<Grammar> list = new ArrayList<Grammar>();
 
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-
+        String selectQuery = "SELECT * FROM " + Grammar.TABLE + " " + condition;
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

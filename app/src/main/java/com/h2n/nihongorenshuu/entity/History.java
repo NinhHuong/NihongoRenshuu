@@ -5,6 +5,16 @@ package com.h2n.nihongorenshuu.entity;
  */
 
 public class History {
+    public static final String TABLE = "History";
+
+    // Labels Table Columns names
+    public static final String KEY_Id = "id";
+    public static final String KEY_SentenceId = "sentenceId";
+    public static final String KEY_UserTrans = "userTrans";
+    public static final String KEY_Time = "time";
+    public static final String KEY_IsGame = "isGame";
+    public static final String KEY_IsCorrect = "isCorrect";
+
     private  int id;
     private  int sentenceId;
     private  String userTrans;
@@ -78,5 +88,20 @@ public class History {
 
     public void setCorrect(boolean correct) {
         isCorrect = correct;
+    }
+
+    @Override
+    public String toString() {
+        return "History (" + id + ", " + sentenceId + ", " + userTrans + ", " + time + ", " + isGame + ", " + isCorrect + ")\n";
+    }
+
+    public boolean compare(History obj2) {
+        return this.id == obj2.getId() && this.sentenceId == obj2.getSentenceId() && this.userTrans == obj2.getUserTrans()
+                && this.time.equals(obj2.getTime()) && this.isGame == obj2.isGame() && this.isCorrect == obj2.isCorrect();
+    }
+
+    public boolean compareIgnoreId(History obj2) {
+        return this.id == obj2.getId() && this.sentenceId == obj2.getSentenceId() && this.userTrans.equals(obj2.getUserTrans())
+                && this.time.equals(obj2.getTime()) && this.isGame == obj2.isGame() && this.isCorrect == obj2.isCorrect();
     }
 }

@@ -65,6 +65,11 @@ public class Sentence {
         this.vnSentence = vnSentence;
     }
 
+    @Override
+    public String toString() {
+        return "Sentence (" + id + ", " + grammarExplainId + id + ", " + jpSentence + id + ", " + vnSentence + ")\n";
+    }
+
     public boolean compare(Sentence obj2) {
         return this.id == obj2.getId() && this.grammarExplainId == obj2.getGrammarExplainId()
                 && this.jpSentence.equals(obj2.getJpSentence()) && this.vnSentence.equals(obj2.getVnSentence());

@@ -67,7 +67,7 @@ public class SentencePart {
 
     @Override
     public String toString() {
-        return "Sentence Part (" + id + ", " + sentenceId + ", " + partContent + ", " + partIndex + ")";
+        return "Sentence Part (" + id + ", " + sentenceId + ", " + partContent + ", " + partIndex + ")\n";
     }
 
     public boolean compare(SentencePart obj2) {
