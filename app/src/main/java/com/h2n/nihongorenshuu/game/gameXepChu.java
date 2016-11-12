@@ -1,0 +1,15 @@
+package com.h2n.nihongorenshuu.game;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import com.h2n.nihongorenshuu.R;
+
+public class gameXepChu extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_xep_chu);
+    }
+}
