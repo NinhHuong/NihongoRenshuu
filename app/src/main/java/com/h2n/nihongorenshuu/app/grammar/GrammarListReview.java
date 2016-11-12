@@ -1,4 +1,4 @@
-package com.h2n.nihongorenshuu.app;
+package com.h2n.nihongorenshuu.app.grammar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.h2n.nihongorenshuu.MainActivity;
 import com.h2n.nihongorenshuu.R;
@@ -26,6 +27,7 @@ public class GrammarListReview extends Activity {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
+    TextView gr_detail_title;
     private int lastExpandedPosition = -1;
     List<String> listUnit;
     HashMap<String, List<Grammar>> hashGrammar;
@@ -37,8 +39,10 @@ public class GrammarListReview extends Activity {
         setContentView(R.layout.grammar_list_review);
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        gr_detail_title = (TextView) findViewById(R.id.gr_detail_title);
 
         prepareListData();
+        gr_detail_title.setText(getResources().getString(R.string.gr_detail_title) + " " + level);
 
         listAdapter = new ExpandableListAdapter(this, listUnit, hashGrammar);
         expListView.setAdapter(listAdapter);
@@ -88,7 +92,7 @@ public class GrammarListReview extends Activity {
     private void prepareListData() {
         level = 3;
         GrammarRepo gr = new GrammarRepo();
-        String query = "SELECT * FROM " + Grammar.TABLE + " WHERE " + Grammar.KEY_Level + " = " + level;
+        String query = "WHERE " + Grammar.KEY_Level + " = " + level;
         List<Grammar> listGrammar = gr.getGrammarBySelectQuery(query);
         listUnit = new ArrayList<String>();
         hashGrammar = new HashMap<String, List<Grammar>>();

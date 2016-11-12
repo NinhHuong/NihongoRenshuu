@@ -5,7 +5,14 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:orientation="vertical" >
-    
+
+    <TextView
+        android:text="@string/gr_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/gr_detail_title"
+        android:layout_weight="1.56" />
+
     <ExpandableListView
         android:id="@+id/lvExp"
         android:layout_height="0dp"

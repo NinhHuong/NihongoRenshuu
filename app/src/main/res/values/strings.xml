@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Nihongo Renshuu</string>
     <string name="unit">Unit</string>
+    <string name="gr_detail_title">Grammars of Level</string>
 </resources>
