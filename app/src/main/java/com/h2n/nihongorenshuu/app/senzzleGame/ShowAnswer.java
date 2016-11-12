@@ -1,4 +1,4 @@
-package com.h2n.nihongorenshuu.senzzleGame;
+package com.h2n.nihongorenshuu.app.senzzleGame;
 
 /**
  * Created by Catbui on 11/11/2016.

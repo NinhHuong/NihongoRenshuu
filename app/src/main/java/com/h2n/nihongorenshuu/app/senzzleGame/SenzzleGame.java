@@ -1,4 +1,4 @@
-package com.h2n.nihongorenshuu.senzzleGame;
+package com.h2n.nihongorenshuu.app.senzzleGame;
 
 import android.content.DialogInterface;
 import android.content.Intent;
