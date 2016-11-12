@@ -79,7 +79,7 @@ public class GrammarStructure {
 
     @Override
     public String toString() {
-        return "Grammar Structure (" + id + ", " + grammarId + ", " + structure + ", " + note + ")";
+        return "Grammar Structure (" + id + ", " + grammarId + ", " + structure + ", " + note + ")\n";
     }
 
     public boolean compare(GrammarStructure obj2) {

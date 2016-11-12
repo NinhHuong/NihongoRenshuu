@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SentencePartRepo {
 
-    public void insert(SentencePart sp) {
+    public int insert(SentencePart sp) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(SentencePart.KEY_SentenceId, sp.getSentenceId());
@@ -26,12 +26,25 @@ public class SentencePartRepo {
         values.put(SentencePart.KEY_PartIndex, sp.getPartIndex());
 
         //insert
-        db.insert(SentencePart.TABLE, null, values);
-        System.out.println("insert success to table " + SentencePart.TABLE);
+        int result = (int)db.insert(SentencePart.TABLE, null, values);
+
+        //getId inserted
+        int insertedId = -1;
+        if(result != -1) {
+            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + SentencePart.TABLE + "\"";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
         DatabaseManager.getInstance().closeDatabase();
+        return insertedId;
     }
 
-    public void update(SentencePart sp) {
+    public int update(SentencePart sp) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(SentencePart.KEY_SentenceId, sp.getSentenceId());
@@ -39,16 +52,19 @@ public class SentencePartRepo {
         values.put(SentencePart.KEY_PartIndex, sp.getPartIndex());
 
         //update
-        db.update(SentencePart.TABLE, values, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
+        int result = (int)db.update(SentencePart.TABLE, values, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
         System.out.println("update success to table " + SentencePart.TABLE);
         DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
-    public void delete(SentencePart sp) {
+    public int delete(SentencePart sp) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(SentencePart.TABLE, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
+        int result = (int)db.delete(SentencePart.TABLE, SentencePart.KEY_Id + " = ?", new String[]{String.valueOf(sp.getId())});
+        DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
     public void deleteTable( ) {
@@ -109,12 +125,12 @@ public class SentencePartRepo {
         return sp;
     }
 
-    public List<SentencePart> getSentencePartBySelectQuery(String selectQuery){
+    public List<SentencePart> getSentencePartBySelectQuery(String condition){
 
         List<SentencePart> list = new ArrayList<SentencePart>();
 
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-
+        String selectQuery = "SELECT * FROM " + SentencePart.TABLE + " " + condition;
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

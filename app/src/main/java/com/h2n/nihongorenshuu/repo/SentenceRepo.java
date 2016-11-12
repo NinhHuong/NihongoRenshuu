@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class SentenceRepo {
-    public void insert(Sentence st) {
+    public int insert(Sentence st) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(Sentence.KEY_GrammarExplainId, st.getGrammarExplainId());
@@ -23,12 +23,25 @@ public class SentenceRepo {
         values.put(Sentence.KEY_VnSentence, st.getVnSentence());
 
         //insert
-        db.insert(Sentence.TABLE, null, values);
-        System.out.println("insert success to table " + Sentence.TABLE);
+        int result = (int)db.insert(Sentence.TABLE, null, values);
+
+        //getId inserted
+        int insertedId = -1;
+        if(result != -1) {
+            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + Sentence.TABLE + "\"";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
         DatabaseManager.getInstance().closeDatabase();
+        return insertedId;
     }
 
-    public void update(Sentence st) {
+    public int update(Sentence st) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(Sentence.KEY_GrammarExplainId, st.getGrammarExplainId());
@@ -36,16 +49,18 @@ public class SentenceRepo {
         values.put(Sentence.KEY_VnSentence, st.getVnSentence());
 
         //update
-        db.update(Sentence.TABLE, values, Sentence.KEY_Id + " = ?", new String[]{String.valueOf(st.getId())});
-        System.out.println("update success to table " + Sentence.TABLE);
+        int result = (int)db.update(Sentence.TABLE, values, Sentence.KEY_Id + " = ?", new String[]{String.valueOf(st.getId())});
         DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
-    public void delete(Sentence st) {
+    public int delete(Sentence st) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(Sentence.TABLE, Sentence.KEY_Id + " = ?", new String[]{String.valueOf(st.getId())});
+        int result = (int)db.delete(Sentence.TABLE, Sentence.KEY_Id + " = ?", new String[]{String.valueOf(st.getId())});
+        DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
     public void deleteTable( ) {
@@ -107,12 +122,12 @@ public class SentenceRepo {
         return st;
     }
 
-    public List<Sentence> getSentenceBySelectQuery(String selectQuery){
+    public List<Sentence> getSentenceBySelectQuery(String condition){
 
         List<Sentence> list = new ArrayList<Sentence>();
 
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-
+        String selectQuery = "SELECT * FROM " + Sentence.TABLE + " " + condition;
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

@@ -79,7 +79,7 @@ public class GrammarExplain {
 
     @Override
     public String toString() {
-        return "Grammar Explain (" + id + ", " + grammarStructureId + ", " + explanation + ", " + note + ")";
+        return "Grammar Explain (" + id + ", " + grammarStructureId + ", " + explanation + ", " + note + ")\n";
     }
 
     public boolean compare(GrammarExplain obj2) {

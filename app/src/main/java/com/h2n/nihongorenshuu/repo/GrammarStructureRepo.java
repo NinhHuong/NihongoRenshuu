@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class GrammarStructureRepo {
-    public void insert(GrammarStructure gs) {
+    public int insert(GrammarStructure gs) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(GrammarStructure.KEY_GrammarId, gs.getGrammarId());
@@ -23,12 +23,25 @@ public class GrammarStructureRepo {
         values.put(GrammarStructure.KEY_Note, gs.getNote());
 
         //insert
-        db.insert(GrammarStructure.TABLE, null, values);
-        System.out.println("insert success to table " + GrammarStructure.TABLE);
+        int result = (int)db.insert(GrammarStructure.TABLE, null, values);
+
+        //getId inserted
+        int insertedId = -1;
+        if(result != -1) {
+            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + GrammarStructure.TABLE + "\"";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
         DatabaseManager.getInstance().closeDatabase();
+        return insertedId;
     }
 
-    public void update(GrammarStructure gs) {
+    public int update(GrammarStructure gs) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(GrammarStructure.KEY_GrammarId, gs.getGrammarId());
@@ -36,16 +49,19 @@ public class GrammarStructureRepo {
         values.put(GrammarStructure.KEY_Note, gs.getNote());
 
         //update
-        db.update(GrammarStructure.TABLE, values, GrammarStructure.KEY_Id + " = ?", new String[]{String.valueOf(gs.getId())});
+        int result = (int)db.update(GrammarStructure.TABLE, values, GrammarStructure.KEY_Id + " = ?", new String[]{String.valueOf(gs.getId())});
         System.out.println("update success to table " + GrammarStructure.TABLE);
         DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
-    public void delete(GrammarStructure gs) {
+    public int delete(GrammarStructure gs) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         //delete
-        db.delete(GrammarStructure.TABLE, GrammarStructure.KEY_Id + " = ?", new String[]{String.valueOf(gs.getId())});
+        int result = (int)db.delete(GrammarStructure.TABLE, GrammarStructure.KEY_Id + " = ?", new String[]{String.valueOf(gs.getId())});
+        DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
     public void deleteTable( ) {
@@ -107,11 +123,12 @@ public class GrammarStructureRepo {
         return gs;
     }
 
-    public List<GrammarStructure> getGrammarStructureBySelectQuery(String selectQuery){
+    public List<GrammarStructure> getGrammarStructureBySelectQuery(String condition){
 
         List<GrammarStructure> list = new ArrayList<GrammarStructure>();
 
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT * FROM " + GrammarStructure.TABLE + " " + condition;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
