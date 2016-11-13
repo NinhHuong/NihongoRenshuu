@@ -1,14 +1,11 @@
 package com.h2n.nihongorenshuu.app.grammar;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.h2n.nihongorenshuu.MainActivity;
 import com.h2n.nihongorenshuu.R;
 import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.extendObject.ExpandableListAdapter;
@@ -29,14 +26,14 @@ public class GrammarListReview extends Activity {
     ExpandableListView expListView;
     TextView gr_detail_title;
     private int lastExpandedPosition = -1;
-    List<String> listUnit;
-    HashMap<String, List<Grammar>> hashGrammar;
+    private List<String> listUnit;
+    private HashMap<String, List<Grammar>> hashGrammar;
     int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.grammar_list_review);
+        setContentView(R.layout.expandable_list_view);
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         gr_detail_title = (TextView) findViewById(R.id.gr_detail_title);
