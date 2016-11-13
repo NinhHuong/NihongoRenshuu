@@ -3,6 +3,7 @@ package com.h2n.nihongorenshuu.app.senzzleGame;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,18 +20,19 @@ public class Submit extends AppCompatActivity implements View.OnClickListener{
 
     Button btViewGame, btBackHome, btTryAgain;
     TextView textKetQua;
-    String dungSai = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.senzzle_submit);
+        setTitle("SUBMIT");
 
         thamChieu();
-        Bundle layGiaTri = new Bundle();
-        if(layGiaTri != null){
-            dungSai = layGiaTri.getString("ketQua");
-            textKetQua.setText(dungSai);
+        Bundle layValue = getIntent().getExtras();
+        if(layValue != null){
+            Log.d("nhanValue", layValue.getString("ketQua"));
+            textKetQua.setText(layValue.getString("ketQua"));
         }
+
         btBackHome.setOnClickListener(this);
         btTryAgain.setOnClickListener(this);
         btViewGame.setOnClickListener(this);
@@ -65,7 +67,7 @@ public class Submit extends AppCompatActivity implements View.OnClickListener{
                 finish();
                 //code here
                 break;
-            case R.id.btHome: // done
+            case R.id.btContinue: // done
                 //code here // chi can quay ve page main
                 Intent backhome = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(backhome);
@@ -83,6 +85,6 @@ public class Submit extends AppCompatActivity implements View.OnClickListener{
 
         btViewGame = (Button) findViewById(R.id.btViewAll);
         btTryAgain = (Button) findViewById(R.id.btTryAgain);
-        btBackHome = (Button) findViewById(R.id.btHome);
+        btBackHome = (Button) findViewById(R.id.btContinue);
     }
 }

@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.catbui.demogamexephinh.games.GameXepCau">
+    tools:context="com.h2n.nihongorenshuu.app.senzzleGame.SenzzleGame">
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textSize="20dp"
-        android:id="@+id/textView3" />
+        android:id="@+id/dungSai" />
 
     <Button
         android:text="Button"

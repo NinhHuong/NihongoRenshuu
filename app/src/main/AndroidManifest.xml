@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".app.senzzleGame.game01Submit" />
+        <activity android:name=".app.senzzleGame.game01View"></activity>
     </application>
 
 </manifest>
