@@ -1,31 +1,16 @@
 package com.h2n.nihongorenshuu.app.transquiz;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
-import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.Data;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -36,10 +21,7 @@ import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.extendObject.CbGrammarItem;
 import com.h2n.nihongorenshuu.extendObject.CbGrammarUnit;
 import com.h2n.nihongorenshuu.extendObject.ExpandableListCbAdapter;
-import com.h2n.nihongorenshuu.extendObject.Item;
 import com.h2n.nihongorenshuu.repo.GrammarRepo;
-
-import org.json.JSONArray;
 
 /**
  * Created by ninhh on 11/13/2016.

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:text="@string/sen_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSenNo"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <TextView
+            android:text="@string/gra_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_weight="1" />
+
+        <TextView
+            android:text="@string/gra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvGra"
+            android:textColor="@color/gra_link"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/sen_content"
+        android:textColor="@color/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSenContent"
+        android:layout_weight="1" />
+
+    <TextView
+        android:text="@string/user_trans_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserTransTitle"
+        android:layout_weight="1" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/etUserTrans"
+        android:layout_weight="1"
+        android:hint="@string/answer_hint" />
+
+    <TextView
+        android:text="@string/correction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCorrection"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+        <Button
+            android:text="@string/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_next"
+            android:id="@+id/btnSubmit"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/key_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvKeyTitle"
+        android:layout_weight="1" />
+
+    <TextView
+        android:text="@string/key"
+        android:textColor="@color/key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvKey"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal">
+        <ImageButton
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/btn_next"
+            android:layout_height="@dimen/btn_next"
+            app:srcCompat="@drawable/prev"
+            android:layout_gravity="left"
+            android:id="@+id/btnPrev" />
+
+        <ImageButton
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/btn_next"
+            android:layout_height="@dimen/btn_next"
+            app:srcCompat="@drawable/next"
+            android:id="@+id/btnNext" />
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pg_height"
+        android:id="@+id/pbStatus"
+        android:layout_weight="1"
+        android:max="100"
+        android:progress="20" />
+</LinearLayout>
