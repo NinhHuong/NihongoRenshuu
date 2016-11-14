@@ -2,4 +2,21 @@
     <string name="app_name">Nihongo Renshuu</string>
     <string name="unit">Unit</string>
     <string name="gr_detail_title">Grammars of Level</string>
+
+    <!--Translation quiz screen-->
+    <string name="btnStart">Start</string>
+    <string name="sen_no">Sentence</string>
+    <string name="gra_title">Grammar: </string>
+    <string name="gra">Grammar Content</string>
+    <string name="sen_content">Sentence content</string>
+    <string name="user_trans_title">Your translation</string>
+    <string name="answer_hint">Enter your answer</string>
+    <string name="correction">Correction the answer of user</string>
+    <string name="btnSubmit">Submit</string>
+    <string name="key_title">Key</string>
+    <string name="key">Key</string>
+    <string name="blank"></string>
+
+    <string name="dialog_title_warning">Warning</string>
+    <string name="dialog_warning_empty">Please enter your translation</string>
 </resources>

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.provider.ContactsContract.Data;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,8 @@ import com.h2n.nihongorenshuu.extendObject.ExpandableListCbAdapter;
 import com.h2n.nihongorenshuu.extendObject.Item;
 import com.h2n.nihongorenshuu.repo.GrammarRepo;
 
+import org.json.JSONArray;
+
 /**
  * Created by ninhh on 11/13/2016.
  */
@@ -47,6 +51,7 @@ public class TransQuizHome extends Activity {
     private int level;
     private List<CbGrammarUnit> listUnit;
     private HashMap<CbGrammarUnit, List<CbGrammarItem>> hashGrammar;
+    private Button btnStart;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -59,22 +64,48 @@ public class TransQuizHome extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.expandable_list_view);
+        setContentView(R.layout.activity_trans_quiz_home);
         initViews();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        btnStart = (Button) findViewById(R.id.btnStart);
     }
 
 
     private void initViews() {
 
         prepareListData();
-        expandableListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableList);
         ExpandableListCbAdapter adapter = new ExpandableListCbAdapter(this, expandableListView, listUnit, hashGrammar);
         expandableListView.setAdapter(adapter);
 
+    }
+
+    public void btnStartOnClick(View view) {
+        if(btnStart.getText().equals(getResources().getString(R.string.btnStart))) {
+            ArrayList<Integer> listSelectedGra = new ArrayList<>();
+            for(CbGrammarUnit unit : hashGrammar.keySet()) {
+                List<CbGrammarItem> listGra = hashGrammar.get(unit);
+                for(CbGrammarItem gra : listGra) {
+                    if(gra.isChecked()) {
+                        listSelectedGra.add(gra.getGrammar().getId());
+                    }
+                }
+            }
+
+
+
+            Intent i = new Intent(this, TransQuiz.class);
+            Bundle b = new Bundle();
+//            b.putString("level", level);
+            b.putInt("isJpToVn", 1);
+            b.putIntegerArrayList("listSelectedGra", listSelectedGra);
+            i.putExtras(b);
+            startActivity(i);
+        }
     }
 
     /**
@@ -121,10 +152,9 @@ public class TransQuizHome extends Activity {
         GrammarRepo gr = new GrammarRepo();
         String query = "WHERE " + Grammar.KEY_Level + " = " + level;
         List<Grammar> listGrammar = gr.getGrammarBySelectQuery(query);
-        listUnit = new ArrayList<CbGrammarUnit>();
-        hashGrammar = new HashMap<CbGrammarUnit, List<CbGrammarItem>>();
+        listUnit = new ArrayList<>();
+        hashGrammar = new HashMap<>();
         for(Grammar gra : listGrammar) {
-//            String unit = getResources().getString(R.string.unit) + " " + gra.getUnit();
             CbGrammarUnit unit = new CbGrammarUnit(getResources().getString(R.string.unit) + " " + gra.getUnit());
             List<CbGrammarItem> temp = new ArrayList<CbGrammarItem>();
             if(listUnit.contains(unit)) {

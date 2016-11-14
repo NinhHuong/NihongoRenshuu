@@ -42,6 +42,19 @@ public class History {
         this.isCorrect = isCorrect;
     }
 
+    public History(int sentenceId, String userTrans, boolean isGame, boolean isCorrect) {
+        this.sentenceId = sentenceId;
+        this.userTrans = userTrans;
+        this.isGame = isGame;
+        this.isCorrect = isCorrect;
+    }
+
+    public History(int sentenceId, String userTrans, boolean isGame) {
+        this.sentenceId = sentenceId;
+        this.userTrans = userTrans;
+        this.isGame = isGame;
+    }
+
     public int getId() {
         return id;
     }

@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--translation quiz color-->
+    <color name="key">#ff0000</color>
+    <color name="gra_link">#3607ea</color>
+    <color name="content">#000000</color>
 </resources>

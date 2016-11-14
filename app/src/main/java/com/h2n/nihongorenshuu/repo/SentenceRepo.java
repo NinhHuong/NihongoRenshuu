@@ -124,7 +124,7 @@ public class SentenceRepo {
 
     public List<Sentence> getSentenceBySelectQuery(String condition){
 
-        List<Sentence> list = new ArrayList<Sentence>();
+        List<Sentence> list = new ArrayList<>();
 
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT * FROM " + Sentence.TABLE + " " + condition;
