@@ -1,5 +1,8 @@
 package com.h2n.nihongorenshuu.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Huyen on 11/4/2016.
  */
@@ -31,6 +34,17 @@ public class Sentence {
         this.grammarExplainId = grammarExplainId;
         this.jpSentence = jpSentence;
         this.vnSentence = vnSentence;
+    }
+
+    public Sentence(JSONObject json) {
+        try{
+            this.id = Integer.parseInt(json.getString(Sentence.KEY_Id));
+            this.grammarExplainId = Integer.parseInt(json.getString(Sentence.KEY_GrammarExplainId));
+            this.jpSentence = json.getString(Sentence.KEY_JpSentence);
+            this.vnSentence = json.getString(Sentence.KEY_VnSentence);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {

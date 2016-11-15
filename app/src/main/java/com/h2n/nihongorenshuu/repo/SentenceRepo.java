@@ -5,7 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.h2n.nihongorenshuu.database.DatabaseManager;
+import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.entity.Sentence;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +151,40 @@ public class SentenceRepo {
         System.out.println("get success " + list.size() + " from " + Sentence.TABLE);
 
         return list;
+    }
+
+    public List<JSONObject> getRetrieveSentenceAndGrammar(String select) {
+        List<JSONObject> listRetrieve = new ArrayList<>();
+
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) do {
+            JSONObject sen = new JSONObject();
+            JSONObject gra = new JSONObject();
+            JSONObject retrieveObject = new JSONObject();
+            try {
+                sen.put(Sentence.KEY_Id, cursor.getInt(cursor.getColumnIndex(Sentence.KEY_Id)));
+                sen.put(Sentence.KEY_GrammarExplainId, cursor.getInt(cursor.getColumnIndex(Sentence.KEY_GrammarExplainId)));
+                sen.put(Sentence.KEY_JpSentence, cursor.getString(cursor.getColumnIndex(Sentence.KEY_JpSentence)));
+                sen.put(Sentence.KEY_VnSentence, cursor.getString(cursor.getColumnIndex(Sentence.KEY_VnSentence)));
+
+                gra.put(Grammar.KEY_Id, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Id)));
+                gra.put(Grammar.KEY_Level, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Level)));
+                gra.put(Grammar.KEY_Name, cursor.getString(cursor.getColumnIndex(Grammar.KEY_Name)));
+                gra.put(Grammar.KEY_Unit, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Unit)));
+
+                retrieveObject.put("Sentence", sen);
+                retrieveObject.put("Grammar", gra);
+                listRetrieve.add(retrieveObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } while (cursor.moveToNext());
+
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+        return listRetrieve;
     }
 
     public void test(){

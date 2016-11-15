@@ -2,6 +2,7 @@ package com.h2n.nihongorenshuu.app.transquiz;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.h2n.nihongorenshuu.R;
+import com.h2n.nihongorenshuu.app.grammar.GrammarDetail;
 import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.entity.GrammarExplain;
 import com.h2n.nihongorenshuu.entity.GrammarStructure;
@@ -19,6 +21,9 @@ import com.h2n.nihongorenshuu.entity.Sentence;
 import com.h2n.nihongorenshuu.repo.GrammarRepo;
 import com.h2n.nihongorenshuu.repo.SentenceRepo;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +35,12 @@ import java.util.List;
 public class TransQuiz extends Activity implements View.OnClickListener{
 
 
-    private List<Sentence> listSen = new ArrayList<>();
+//    private List<Sentence> listSen = new ArrayList<>();
     private List<History> listHis = new ArrayList<>();
-    private List<Grammar> listGra = new ArrayList<>();
+//    private List<Grammar> listGra = new ArrayList<>();
+    private List<JSONObject> listRetrieve = new ArrayList<>();
+    Sentence sentence;
+    Grammar grammar;
     private int isVnToJp, index;
 
     TextView tvSenNo, tvGra, tvSen, tvCorrection, tvKey, tvKeyTitle;
@@ -49,11 +57,11 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         Bundle b = getIntent().getExtras();
         isVnToJp = b.getInt("isJpToVn");
         ArrayList<Integer> listSelectedGra = b.getIntegerArrayList("listSelectedGra");
-        String listGra = listSelectedGra.toString();
+        String listGraId = listSelectedGra.toString();
         isVnToJp = 1;
 
-        listGra = listGra.replace("[", "(");
-        listGra = listGra.replace("]", ")");
+        listGraId = listGraId.replace("[", "(");
+        listGraId = listGraId.replace("]", ")");
 
         tvSenNo = (TextView) findViewById(R.id.tvSenNo);
         tvGra = (TextView) findViewById(R.id.tvGra);
@@ -67,10 +75,29 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         etUserTrans = (EditText) findViewById(R.id.etUserTrans);
         pbStatus = (ProgressBar) findViewById(R.id.pbStatus);
 
-        String where = "WHERE " + Sentence.KEY_GrammarExplainId + " IN " + listGra + " ORDER BY RANDOM()";
+        String where = ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
+                Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
+                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
+                " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
+                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
+                " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId + " ORDER BY RANDOM()";
+        String select = "SELECT * FROM " + Sentence.TABLE + ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
+                Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
+                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
+                " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
+                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
+                " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId + " ORDER BY RANDOM()";
         SentenceRepo sr = new SentenceRepo();
-        listSen = sr.getSentenceBySelectQuery(where);
+//        listSen = sr.getSentenceBySelectQuery(where);
+        listRetrieve = sr.getRetrieveSentenceAndGrammar(select);
         index = 0;
+        try{
+            sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
+            grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         clearScreen();
         loadNewSentence();
 
@@ -96,36 +123,27 @@ public class TransQuiz extends Activity implements View.OnClickListener{
             clearScreen();
             loadReviewScreen();
         } else if(view == tvGra) {
-            goToGrammarDetail(listGra.get(index).getId());
+            goToGrammarDetail(grammar.getId());
         }
     }
 
     private void loadNewSentence() {
-        Sentence sen = listSen.get(index);
-        String no = Integer.toString(index + 1) + "/" + Integer.toString(listSen.size());
+        String no = Integer.toString(index + 1) + "/" + Integer.toString(listRetrieve.size());
         tvSenNo.setText(no);
-        GrammarRepo gr = new GrammarRepo();
-        List<Grammar> list = gr.getGrammarBySelectQuery(", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
-            GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
-            " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
-            " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + sen.getGrammarExplainId());
-        if(list.size() == 1) {
-            listGra.add((list.get(0)));
-            tvGra.setText(" " + listGra.get(index).getName());
-        }
+        tvGra.setText(" " + grammar.getName());
         if(isVnToJp == 1) {
-            tvSen.setText(sen.getVnSentence());
+            tvSen.setText(sentence.getVnSentence());
         } else {
-            tvSen.setText(sen.getJpSentence());
+            tvSen.setText(sentence.getJpSentence());
         }
         btnNext.setEnabled(false);
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
-        if(index == listSen.size()-1) {
+        if(index == listRetrieve.size()-1) {
             btnNext.setEnabled(false);
         }
-        pbStatus.setMax(listSen.size());
+        pbStatus.setMax(listRetrieve.size());
         pbStatus.setProgress(index + 1);
     }
 
@@ -139,38 +157,38 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
-        if(index == listSen.size()-1){
+        if(index == listRetrieve.size()-1){
             btnNext.setEnabled(false);
         }
 
         etUserTrans.setEnabled(false);
         tvKeyTitle.setVisibility(View.VISIBLE);
         if(isVnToJp == 1) {
-            tvKey.setText(listSen.get(index).getJpSentence());
+            tvKey.setText(sentence.getJpSentence());
         } else {
-            tvKey.setText(listSen.get(index).getVnSentence());
+            tvKey.setText(sentence.getVnSentence());
         }
-        History his = new History(listSen.get(index).getId(), etUserTrans.getText().toString().trim(), false);
+        History his = new History(sentence.getId(), etUserTrans.getText().toString().trim(), false);
         listHis.add(his);
     }
 
     private void loadReviewScreen() {
-        String no = Integer.toString(index + 1) + "/" + Integer.toString(listSen.size());
+        String no = Integer.toString(index + 1) + "/" + Integer.toString(listRetrieve.size());
         tvSenNo.setText(no);
-        tvGra.setText(" " + listGra.get(index).getName());
+        tvGra.setText(" " + grammar.getName());
         etUserTrans.setText(listHis.get(index).getUserTrans());
         if(isVnToJp == 1) {
-            tvSen.setText(listSen.get(index).getVnSentence());
-            tvKey.setText(listSen.get(index).getJpSentence());
+            tvSen.setText(sentence.getVnSentence());
+            tvKey.setText(sentence.getJpSentence());
         } else {
-            tvSen.setText(listSen.get(index).getJpSentence());
-            tvKey.setText(listSen.get(index).getVnSentence());
+            tvSen.setText(sentence.getJpSentence());
+            tvKey.setText(sentence.getVnSentence());
         }
         btnNext.setEnabled(false);
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
-        pbStatus.setMax(listSen.size());
+        pbStatus.setMax(listRetrieve.size());
         pbStatus.setProgress(index + 1);
 
         btnSubmit.setEnabled(false);
@@ -178,7 +196,7 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
-        if(index == listSen.size()-1){
+        if(index == listRetrieve.size()-1){
             btnNext.setEnabled(false);
         }
 
@@ -187,11 +205,11 @@ public class TransQuiz extends Activity implements View.OnClickListener{
     }
 
     private void goToGrammarDetail(int graId) {
-        /*Intent i = new Intent(this, TransQuiz.class);
+        Intent i = new Intent(this, GrammarDetail.class);
         Bundle b = new Bundle();
-        b.putInt("isJpToVn", 1);
+        b.putInt("grammar_id", graId);
         i.putExtras(b);
-        startActivity(i);*/
+        startActivity(i);
     }
 
     private void clearScreen() {

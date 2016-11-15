@@ -1,5 +1,8 @@
 package com.h2n.nihongorenshuu.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Huyen on 11/4/2016.
  */
@@ -31,6 +34,17 @@ public class Grammar {
         this.level = level;
         this.name = name;
         this.unit = unit;
+    }
+
+    public Grammar (JSONObject json) {
+        try {
+            this.id = Integer.parseInt(json.getString(Grammar.KEY_Id));
+            this.level = Integer.parseInt(json.getString(Grammar.KEY_Level));
+            this.name = json.getString(Grammar.KEY_Name).toString();
+            this.unit = Integer.parseInt(json.getString(Grammar.KEY_Unit));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
