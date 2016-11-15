@@ -7,7 +7,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:text="@string/gr_detail_title"
+        android:text="@string/gr_list_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/gr_detail_title"

@@ -1,6 +1,7 @@
 package com.h2n.nihongorenshuu.app.grammar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -36,10 +37,10 @@ public class GrammarListReview extends Activity {
         setContentView(R.layout.expandable_list_view);
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        gr_detail_title = (TextView) findViewById(R.id.gr_detail_title);
+        gr_detail_title = (TextView) findViewById(R.id.gr_list_title);
 
         prepareListData();
-        gr_detail_title.setText(getResources().getString(R.string.gr_detail_title) + " " + level);
+        gr_detail_title.setText(getResources().getString(R.string.gr_list_title) + " " + level);
 
         listAdapter = new ExpandableListAdapter(this, listUnit, hashGrammar);
         expListView.setAdapter(listAdapter);
@@ -76,6 +77,11 @@ public class GrammarListReview extends Activity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 // TODO Auto-generated method stub
+                Intent i = new Intent(GrammarListReview.this, GrammarDetail.class);
+                Bundle b = new Bundle();
+                b.putInt("grammar_id", ((Grammar) hashGrammar.get(listUnit.get(groupPosition)).get(childPosition)).getId());
+                i.putExtras(b);
+                startActivity(i);
                 return false;
             }
         });

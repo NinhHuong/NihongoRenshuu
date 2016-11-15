@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Nihongo Renshuu</string>
-    <string name="unit">Unit</string>
-    <string name="gr_detail_title">Grammars of Level</string>
+    <string name="unit">Unit</string>s
+    <string name="gr_list_title">Grammars of Level</string>
 
     <!--Translation quiz screen-->
     <string name="btnStart">Start</string>
