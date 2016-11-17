@@ -3,6 +3,7 @@ package com.h2n.nihongorenshuu.app.grammar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by ninhh on 11/8/2016.
  */
 
-public class GrammarListReview extends Activity {
+public class GrammarListReview extends AppCompatActivity {
 //    DatabaseHelper dh = new DatabaseHelper(this);
 
     ExpandableListAdapter listAdapter;

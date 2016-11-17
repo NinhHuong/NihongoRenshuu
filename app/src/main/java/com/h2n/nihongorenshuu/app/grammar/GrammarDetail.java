@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by ninhh on 11/12/2016.
  */
 
-public class GrammarDetail extends Activity {
+public class GrammarDetail extends AppCompatActivity {
 
     TextView gr_detail_title;
 

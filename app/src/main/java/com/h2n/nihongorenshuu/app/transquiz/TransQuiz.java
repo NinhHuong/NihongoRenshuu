@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,7 @@ import java.util.List;
  * Created by ninhh on 11/12/2016.
  */
 
-public class TransQuiz extends Activity implements View.OnClickListener{
+public class TransQuiz extends AppCompatActivity implements View.OnClickListener{
 
 
 //    private List<Sentence> listSen = new ArrayList<>();
@@ -198,7 +199,7 @@ public class TransQuiz extends Activity implements View.OnClickListener{
             btnNext.setEnabled(false);
         }
         pbStatus.setMax(listRetrieve.size());
-        pbStatus.setProgress(index + 1);
+        pbStatus.setProgress(listHis.size());
     }
 
     private void loadScreenAfterSubmit() {
@@ -238,6 +239,8 @@ public class TransQuiz extends Activity implements View.OnClickListener{
     }
 
     private void loadReviewScreen() {
+        String no = getResources().getString(R.string.done) + " " +  Integer.toString(index) + "/" + Integer.toString(listRetrieve.size());
+        tvSenNo.setText(no);
         try{
             sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
             grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));

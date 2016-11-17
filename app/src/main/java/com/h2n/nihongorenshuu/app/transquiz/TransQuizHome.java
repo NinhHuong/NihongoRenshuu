@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -34,7 +35,7 @@ import com.h2n.nihongorenshuu.repo.SelectedHistoryRepo;
  * Created by ninhh on 11/13/2016.
  */
 
-public class TransQuizHome extends Activity {
+public class TransQuizHome extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
     private int level;
