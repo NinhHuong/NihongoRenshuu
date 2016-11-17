@@ -5,6 +5,8 @@
 
     <!--Translation quiz screen-->
     <string name="btnStart">Start</string>
+    <string name="btnStartOver">Start Over</string>
+    <string name="btnContinue">Continue</string>
     <string name="sen_no">Sentence</string>
     <string name="gra_title">Grammar: </string>
     <string name="gra">Grammar Content</string>
@@ -15,8 +17,13 @@
     <string name="btnSubmit">Submit</string>
     <string name="key_title">Key</string>
     <string name="key">Key</string>
-    <string name="blank"></string>
+    <string name="done">Done: </string>
 
     <string name="dialog_title_warning">Warning</string>
+    <string name="dialog_title_guide">Instruction</string>
+    <string name="dialog_guide_instruction">Please select grammars that you want to review.</string>
     <string name="dialog_warning_empty">Please enter your translation</string>
+    <string name="dialog_warning_select">Please select Grammar to Continue</string>
+    <string name="rbVn2Jp">Vn -> Jp</string>
+    <string name="rbJp2Vn">Jp -> Vn</string>
 </resources>

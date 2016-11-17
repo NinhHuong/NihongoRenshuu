@@ -20,8 +20,21 @@ public class HistoryRepo {
         ContentValues values = new ContentValues();
         values.put(History.KEY_SentenceId, his.getSentenceId());
         values.put(History.KEY_UserTrans, his.getUserTrans());
-        values.put(History.KEY_IsGame, his.isGame() == true ? 1 : 0);
-        values.put(History.KEY_IsCorrect, his.isCorrect() == true ? 1 : 0);
+        if(his.isGame()) {
+            values.put(History.KEY_IsGame, 1);
+        } else {
+            values.put(History.KEY_IsGame, 0);
+        }
+        if(his.isCorrect()) {
+            values.put(History.KEY_IsCorrect, 1);
+        } else {
+            values.put(History.KEY_IsCorrect, 0);
+        }
+        if(his.isContinue()) {
+            values.put(History.KEY_IsContinue, 1);
+        } else {
+            values.put(History.KEY_IsContinue, 0);
+        }
         //insert
         int result = (int)db.insert(History.TABLE, null, values);
         System.out.println("insert success " + his.toString() + " into " + History.TABLE);
@@ -29,7 +42,7 @@ public class HistoryRepo {
         //getId inserted
         int insertedId = -1;
         if(result != -1) {
-            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = " + History.TABLE;
+            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + History.TABLE + "\"";
             Cursor cursor = db.rawQuery(selectQuery, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -42,7 +55,7 @@ public class HistoryRepo {
         return insertedId;
     }
 
-    public void update(History his) {
+    public int update(History his) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(History.KEY_SentenceId, his.getSentenceId());
@@ -50,9 +63,21 @@ public class HistoryRepo {
         values.put(History.KEY_Time, his.getTime());
         values.put(History.KEY_IsGame, his.isGame());
         values.put(History.KEY_IsCorrect, his.isCorrect());
+        values.put(History.KEY_IsContinue, his.isContinue());
         //update
         int result = (int)db.update(History.TABLE, values, History.KEY_Id + " = ?", new String[]{String.valueOf(his.getId())});
         System.out.println("update success to table " + History.TABLE);
+        DatabaseManager.getInstance().closeDatabase();
+        return result;
+    }
+
+    public void updateContinueRecord() {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+
+        String query = "UPDATE " + History.TABLE + " SET " + History.KEY_IsContinue + " = 0 WHERE " + History.KEY_IsContinue + " = 1";
+        db.execSQL(query);
+
         DatabaseManager.getInstance().closeDatabase();
     }
 
@@ -87,6 +112,7 @@ public class HistoryRepo {
                 his.setTime(cursor.getString(cursor.getColumnIndex(History.KEY_Time)));
                 his.setGame(cursor.getInt(cursor.getColumnIndex(History.KEY_Id)) == 1 ? true : false);
                 his.setCorrect(cursor.getInt(cursor.getColumnIndex(History.KEY_IsCorrect)) == 1 ? true : false);
+                his.setContinue(cursor.getInt(cursor.getColumnIndex(History.KEY_IsContinue)) == 1 ? true : false);
 
                 list.add(his);
             } while (cursor.moveToNext());
@@ -116,6 +142,7 @@ public class HistoryRepo {
                 his.setTime(cursor.getString(cursor.getColumnIndex(History.KEY_Time)));
                 his.setGame(cursor.getInt(cursor.getColumnIndex(History.KEY_Id)) == 1 ? true : false);
                 his.setCorrect(cursor.getInt(cursor.getColumnIndex(History.KEY_IsCorrect)) == 1 ? true : false);
+                his.setContinue(cursor.getInt(cursor.getColumnIndex(History.KEY_IsContinue)) == 1 ? true : false);
             } while (cursor.moveToNext());
         }
 
@@ -144,6 +171,7 @@ public class HistoryRepo {
                 his.setTime(cursor.getString(cursor.getColumnIndex(History.KEY_Time)));
                 his.setGame(cursor.getInt(cursor.getColumnIndex(History.KEY_Id)) == 1 ? true : false);
                 his.setCorrect(cursor.getInt(cursor.getColumnIndex(History.KEY_IsCorrect)) == 1 ? true : false);
+                his.setContinue(cursor.getInt(cursor.getColumnIndex(History.KEY_IsContinue)) == 1 ? true : false);
 
                 list.add(his);
             } while (cursor.moveToNext());
@@ -160,7 +188,7 @@ public class HistoryRepo {
         // get by id
         getHistoryById(1);
         //insert
-        History insertObj = new History(1, "a", "b", true, true);
+        History insertObj = new History(1, "a", "b", true, true, true);
         insert(insertObj);
         List<History> listInsert = getHistoryBySelectQuery("SELECT * FROM " + History.TABLE + " ORDER BY id DESC LIMIT 1;");
         if(listInsert.size() == 1) {

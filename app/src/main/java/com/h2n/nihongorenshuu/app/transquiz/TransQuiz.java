@@ -18,7 +18,8 @@ import com.h2n.nihongorenshuu.entity.GrammarExplain;
 import com.h2n.nihongorenshuu.entity.GrammarStructure;
 import com.h2n.nihongorenshuu.entity.History;
 import com.h2n.nihongorenshuu.entity.Sentence;
-import com.h2n.nihongorenshuu.repo.GrammarRepo;
+import com.h2n.nihongorenshuu.repo.HistoryRepo;
+import com.h2n.nihongorenshuu.repo.SelectedHistoryRepo;
 import com.h2n.nihongorenshuu.repo.SentenceRepo;
 
 
@@ -55,10 +56,9 @@ public class TransQuiz extends Activity implements View.OnClickListener{
 
         //get selected grammarId from TransQuizHome
         Bundle b = getIntent().getExtras();
-        isVnToJp = b.getInt("isJpToVn");
+        isVnToJp = b.getInt("isVn2Jp");
         ArrayList<Integer> listSelectedGra = b.getIntegerArrayList("listSelectedGra");
         String listGraId = listSelectedGra.toString();
-        isVnToJp = 1;
 
         listGraId = listGraId.replace("[", "(");
         listGraId = listGraId.replace("]", ")");
@@ -75,27 +75,62 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         etUserTrans = (EditText) findViewById(R.id.etUserTrans);
         pbStatus = (ProgressBar) findViewById(R.id.pbStatus);
 
-        String where = ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
-                Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
-                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
-                " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
-                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
-                " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId + " ORDER BY RANDOM()";
-        String select = "SELECT * FROM " + Sentence.TABLE + ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
-                Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
-                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
-                " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
-                " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
-                " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId + " ORDER BY RANDOM()";
-        SentenceRepo sr = new SentenceRepo();
-//        listSen = sr.getSentenceBySelectQuery(where);
-        listRetrieve = sr.getRetrieveSentenceAndGrammar(select);
-        index = 0;
-        try{
-            sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
-            grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
-        }catch (JSONException e) {
-            e.printStackTrace();
+//        check is Continue
+        HistoryRepo hr = new HistoryRepo();
+        listHis = hr.getHistoryBySelectQuery("WHERE " + History.KEY_IsContinue + " = 1");
+        if(listHis.size() != 0) {
+            String listDoneHis = "(";
+            for(int i=0; i<listHis.size(); i++) {
+                if(i != listHis.size()-1) {
+                    listDoneHis = listDoneHis + listHis.get(i).getSentenceId() + ", ";
+                } else {
+                    listDoneHis = listDoneHis + listHis.get(i).getSentenceId() + ")";
+                }
+            }
+
+            String select = "SELECT " +  GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + ", " + Grammar.TABLE + "." + Grammar.KEY_Level + ", " +
+                    Grammar.TABLE + "." + Grammar.KEY_Name + ", " + Grammar.TABLE + "." + Grammar.KEY_Unit + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_Id + ", " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_JpSentence + ", " + Sentence.TABLE + "." + Sentence.KEY_VnSentence +
+                    " FROM " + Sentence.TABLE + ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
+                    Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
+                    " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
+                    " AND " + Sentence.TABLE + "." + Sentence.KEY_Id + " IN " + listDoneHis;
+            SentenceRepo sr = new SentenceRepo();
+            listRetrieve = sr.getRetrieveSentenceAndGrammar(select);
+
+            select = "SELECT " +  GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + ", " + Grammar.TABLE + "." + Grammar.KEY_Level + ", " +
+                    Grammar.TABLE + "." + Grammar.KEY_Name + ", " + Grammar.TABLE + "." + Grammar.KEY_Unit + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_Id + ", " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_JpSentence + ", " + Sentence.TABLE + "." + Sentence.KEY_VnSentence +
+                    " FROM " + Sentence.TABLE + ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
+                    Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
+                    " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
+                    " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId +
+                    " AND " + Sentence.TABLE + "." + Sentence.KEY_Id +  " NOT IN " + listDoneHis +
+                    " ORDER BY RANDOM()";
+            List<JSONObject> temp = sr.getRetrieveSentenceAndGrammar(select);
+            listRetrieve.addAll(temp);
+
+            index = listHis.size();
+        } else {
+            String select = "SELECT " +  GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + ", " + Grammar.TABLE + "." + Grammar.KEY_Level + ", " +
+                    Grammar.TABLE + "." + Grammar.KEY_Name + ", " + Grammar.TABLE + "." + Grammar.KEY_Unit + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_Id + ", " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId + ", " +
+                    Sentence.TABLE + "." + Sentence.KEY_JpSentence + ", " + Sentence.TABLE + "." + Sentence.KEY_VnSentence +
+                    " FROM " + Sentence.TABLE + ", " + Grammar.TABLE + ", " + GrammarStructure.TABLE + ", " + GrammarExplain.TABLE + " WHERE " +
+                    Grammar.TABLE + "." + Grammar.KEY_Id + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_StructureId + " = " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_Id +
+                    " AND " + GrammarStructure.TABLE + "." + GrammarStructure.KEY_GrammarId + " = " + Grammar.TABLE + "." + Grammar.KEY_Id +
+                    " AND " + GrammarExplain.TABLE + "." + GrammarExplain.KEY_Id + " = " + Sentence.TABLE + "." + Sentence.KEY_GrammarExplainId +
+                    " AND " + Grammar.TABLE + "." + Grammar.KEY_Id + " IN " + listGraId + " ORDER BY RANDOM()";
+            SentenceRepo sr = new SentenceRepo();
+            listRetrieve = sr.getRetrieveSentenceAndGrammar(select);
+            index = 0;
         }
 
         clearScreen();
@@ -111,11 +146,24 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         if(view == btnSubmit) {
             loadScreenAfterSubmit();
         } else if(view == btnNext) {
-            index ++;
-            clearScreen();
-            if(index < listHis.size()) {
-                loadReviewScreen();
+            if(!btnSubmit.isEnabled()) {
+                index ++;
+                clearScreen();
+                if(index < listHis.size()) {
+                    loadReviewScreen();
+                } else {
+                    loadNewSentence();
+                }
             } else {
+                listRetrieve.remove(index);
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("Sentence", sentence);
+                    json.put("Grammar", grammar);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                listRetrieve.add(json);
                 loadNewSentence();
             }
         } else if (view == btnPrev) {
@@ -128,7 +176,13 @@ public class TransQuiz extends Activity implements View.OnClickListener{
     }
 
     private void loadNewSentence() {
-        String no = Integer.toString(index + 1) + "/" + Integer.toString(listRetrieve.size());
+        try{
+            sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
+            grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String no = getResources().getString(R.string.done) + " " + Integer.toString(listHis.size()) + "/" + Integer.toString(listRetrieve.size());
         tvSenNo.setText(no);
         tvGra.setText(" " + grammar.getName());
         if(isVnToJp == 1) {
@@ -136,7 +190,7 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         } else {
             tvSen.setText(sentence.getJpSentence());
         }
-        btnNext.setEnabled(false);
+//        btnNext.setEnabled(false);
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
@@ -148,12 +202,18 @@ public class TransQuiz extends Activity implements View.OnClickListener{
     }
 
     private void loadScreenAfterSubmit() {
+        try{
+            sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
+            grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
         if(etUserTrans.getText().toString().trim().length() == 0) {
             showMessage(getResources().getString(R.string.dialog_title_warning), getResources().getString(R.string.dialog_warning_empty));
             return;
         }
         btnSubmit.setEnabled(false);
-        btnNext.setEnabled(true);
+//        btnNext.setEnabled(true);
         if(index == 0) {
             btnPrev.setEnabled(false);
         }
@@ -170,11 +230,20 @@ public class TransQuiz extends Activity implements View.OnClickListener{
         }
         History his = new History(sentence.getId(), etUserTrans.getText().toString().trim(), false);
         listHis.add(his);
+        HistoryRepo hr = new HistoryRepo();
+        hr.insert(his);
+
+        String no = getResources().getString(R.string.done) + " " +  Integer.toString(listHis.size()) + "/" + Integer.toString(listRetrieve.size());
+        tvSenNo.setText(no);
     }
 
     private void loadReviewScreen() {
-        String no = Integer.toString(index + 1) + "/" + Integer.toString(listRetrieve.size());
-        tvSenNo.setText(no);
+        try{
+            sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
+            grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
         tvGra.setText(" " + grammar.getName());
         etUserTrans.setText(listHis.get(index).getUserTrans());
         if(isVnToJp == 1) {
@@ -184,7 +253,7 @@ public class TransQuiz extends Activity implements View.OnClickListener{
             tvSen.setText(sentence.getJpSentence());
             tvKey.setText(sentence.getVnSentence());
         }
-        btnNext.setEnabled(false);
+//        btnNext.setEnabled(false);
         if(index == 0) {
             btnPrev.setEnabled(false);
         }

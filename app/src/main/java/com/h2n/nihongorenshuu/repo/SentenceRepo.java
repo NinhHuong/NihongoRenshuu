@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.h2n.nihongorenshuu.database.DatabaseManager;
 import com.h2n.nihongorenshuu.entity.Grammar;
+import com.h2n.nihongorenshuu.entity.GrammarStructure;
 import com.h2n.nihongorenshuu.entity.Sentence;
 
 import org.json.JSONException;
@@ -169,7 +170,7 @@ public class SentenceRepo {
                 sen.put(Sentence.KEY_JpSentence, cursor.getString(cursor.getColumnIndex(Sentence.KEY_JpSentence)));
                 sen.put(Sentence.KEY_VnSentence, cursor.getString(cursor.getColumnIndex(Sentence.KEY_VnSentence)));
 
-                gra.put(Grammar.KEY_Id, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Id)));
+                gra.put(Grammar.KEY_Id, cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_GrammarId)));
                 gra.put(Grammar.KEY_Level, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Level)));
                 gra.put(Grammar.KEY_Name, cursor.getString(cursor.getColumnIndex(Grammar.KEY_Name)));
                 gra.put(Grammar.KEY_Unit, cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Unit)));

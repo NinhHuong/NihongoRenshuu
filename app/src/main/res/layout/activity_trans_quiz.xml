@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -53,18 +52,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/content"
-        android:inputType="textMultiLine"
-        android:ems="10"
         android:id="@+id/etUserTrans"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:layout_weight="1"
         android:hint="@string/answer_hint" />
 
     <TextView
-        android:text="@string/correction"
+        android:text="@string/key_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvCorrection"
+        android:id="@+id/tvKeyTitle"/>
+
+    <TextView
+        android:text="@string/key"
+        android:textColor="@color/key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvKey"
         android:layout_weight="1" />
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -79,21 +86,6 @@
             android:id="@+id/btnSubmit"
             android:gravity="center"/>
     </LinearLayout>
-
-    <TextView
-        android:text="@string/key_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvKeyTitle"
-        android:layout_weight="1" />
-
-    <TextView
-        android:text="@string/key"
-        android:textColor="@color/key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvKey"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -125,4 +117,11 @@
         android:layout_weight="1"
         android:max="100"
         android:progress="20" />
+
+    <TextView
+        android:text="@string/correction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCorrection"
+        android:layout_weight="1" />
 </LinearLayout>

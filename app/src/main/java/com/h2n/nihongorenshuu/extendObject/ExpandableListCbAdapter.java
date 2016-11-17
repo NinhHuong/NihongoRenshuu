@@ -33,13 +33,15 @@ public class ExpandableListCbAdapter extends BaseExpandableListAdapter {
     private HashMap<CbGrammarUnit, List<CbGrammarItem>> listData;
     private List<CbGrammarUnit> listGroup;
     private int lastExpandedPosition = -1;
+    private boolean editable = true;
 
     public ExpandableListCbAdapter(Context context, final ExpandableListView listView, List<CbGrammarUnit> listGroup,
-                                   HashMap<CbGrammarUnit, List<CbGrammarItem>> listData) {
+                                   HashMap<CbGrammarUnit, List<CbGrammarItem>> listData, boolean editable) {
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         this.listData = listData;
         this.listGroup = listGroup;
+        this.editable = editable;
 
         listView.setOnGroupExpandListener(new OnGroupExpandListener() {
 
@@ -77,7 +79,7 @@ public class ExpandableListCbAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.list_checkbox_item, null);
             childHolder = new ChildHolder();
             childHolder.cb = (CheckBox) convertView.findViewById(R.id.cb);
-            childHolder.title = (TextView) convertView.findViewById(R.id.title);
+//            childHolder.title = (TextView) convertView.findViewById(R.id.title);
             convertView.setTag(childHolder);
         } else {
             childHolder = (ChildHolder) convertView.getTag();
@@ -118,7 +120,9 @@ public class ExpandableListCbAdapter extends BaseExpandableListAdapter {
         });
 
         childHolder.cb.setChecked(child.isChecked());
-        childHolder.title.setText(child.getGrammar().getName());
+        childHolder.cb.setEnabled(editable);
+        childHolder.cb.setText(child.getGrammar().getName());
+//        childHolder.title = (TextView) convertView.findViewById(R.id.title);
         return convertView;
     }
 
@@ -184,6 +188,7 @@ public class ExpandableListCbAdapter extends BaseExpandableListAdapter {
 
         });
         holder.cb.setChecked(groupItem.isChecked());
+        holder.cb.setEnabled(editable);
         return convertView;
     }
 
