@@ -16,7 +16,7 @@ public class GrammarExplain {
     private int id;
     private  int grammarStructureId;
     private  String explanation;
-    private  String note;
+    private  boolean note;
 
     public GrammarExplain() {
     }
@@ -32,14 +32,14 @@ public class GrammarExplain {
         this.explanation = explaination;
     }
 
-    public GrammarExplain(int id, int grammarStructureId, String explaination, String note) {
+    public GrammarExplain(int id, int grammarStructureId, String explaination, boolean note) {
         this.id = id;
         this.grammarStructureId = grammarStructureId;
         this.explanation = explaination;
         this.note = note;
     }
 
-    public GrammarExplain(int grammarStructureId, String explaination, String note) {
+    public GrammarExplain(int grammarStructureId, String explaination, boolean note) {
         this.grammarStructureId = grammarStructureId;
         this.explanation = explaination;
         this.note = note;
@@ -69,11 +69,11 @@ public class GrammarExplain {
         this.explanation = explaination;
     }
 
-    public String getNote() {
+    public boolean getNote() {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(boolean note) {
         this.note = note;
     }
 
@@ -83,22 +83,12 @@ public class GrammarExplain {
     }
 
     public boolean compare(GrammarExplain obj2) {
-        if(this.getNote() != null && obj2.getNote() != null) {
-            return this.getId() == obj2.getId() && this.getGrammarStructureId() == obj2.getGrammarStructureId()
-                    && this.getExplaination().equals(obj2.getExplaination()) && this.getNote().equals(obj2.getNote());
-        } else {
-            return this.getId() == obj2.getId() && this.getGrammarStructureId() == obj2.getGrammarStructureId()
-                    && this.getExplaination().equals(obj2.getExplaination());
-        }
+        return this.getId() == obj2.getId() && this.getGrammarStructureId() == obj2.getGrammarStructureId()
+                && this.getExplaination().equals(obj2.getExplaination()) && this.getNote() == obj2.getNote();
     }
 
     public boolean compareIgnoreId(GrammarExplain obj2) {
-        if(this.getNote() != null && obj2.getNote() != null) {
-            return this.getGrammarStructureId() == obj2.getGrammarStructureId()
-                    && this.getExplaination().equals(obj2.getExplaination()) && this.getNote().equals(obj2.getNote());
-        } else {
-            return this.getGrammarStructureId() == obj2.getGrammarStructureId()
-                    && this.getExplaination().equals(obj2.getExplaination());
-        }
+        return this.getGrammarStructureId() == obj2.getGrammarStructureId()
+                && this.getExplaination().equals(obj2.getExplaination()) && this.getNote() == obj2.getNote();
     }
 }

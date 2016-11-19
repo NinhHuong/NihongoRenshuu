@@ -20,25 +20,25 @@ public class GrammarStructureRepo {
         ContentValues values = new ContentValues();
         values.put(GrammarStructure.KEY_GrammarId, gs.getGrammarId());
         values.put(GrammarStructure.KEY_Structure, gs.getStructure());
-        values.put(GrammarStructure.KEY_Note, gs.getNote());
+        values.put(GrammarStructure.KEY_Note, gs.getNote() ? 1 : 0 );
 
         //insert
         int result = (int)db.insert(GrammarStructure.TABLE, null, values);
 
-        //getId inserted
-        int insertedId = -1;
-        if(result != -1) {
-            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + GrammarStructure.TABLE + "\"";
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        DatabaseManager.getInstance().closeDatabase();
-        return insertedId;
+//        //getId inserted
+//        int insertedId = -1;
+//        if(result != -1) {
+//            String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + GrammarStructure.TABLE + "\"";
+//            Cursor cursor = db.rawQuery(selectQuery, null);
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    insertedId = cursor.getInt(cursor.getColumnIndex("seq"));
+//                } while (cursor.moveToNext());
+//            }
+//            cursor.close();
+//        }
+//        DatabaseManager.getInstance().closeDatabase();
+        return result;
     }
 
     public int update(GrammarStructure gs) {
@@ -46,7 +46,7 @@ public class GrammarStructureRepo {
         ContentValues values = new ContentValues();
         values.put(GrammarStructure.KEY_GrammarId, gs.getGrammarId());
         values.put(GrammarStructure.KEY_Structure, gs.getStructure());
-        values.put(GrammarStructure.KEY_Note, gs.getNote());
+        values.put(GrammarStructure.KEY_Note, gs.getNote() ? 1 : 0 );
 
         //update
         int result = (int)db.update(GrammarStructure.TABLE, values, GrammarStructure.KEY_Id + " = ?", new String[]{String.valueOf(gs.getId())});
@@ -85,7 +85,7 @@ public class GrammarStructureRepo {
                 gs.setId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Id)));
                 gs.setGrammarId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_GrammarId)));
                 gs.setStructure(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Structure)));
-                gs.setNote(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Note)));
+                gs.setNote(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Note)) == 1 ? true : false);
 
                 list.add(gs);
             } while (cursor.moveToNext());
@@ -112,7 +112,7 @@ public class GrammarStructureRepo {
                 gs.setId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Id)));
                 gs.setGrammarId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_GrammarId)));
                 gs.setStructure(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Structure)));
-                gs.setNote(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Note)));
+                gs.setNote(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Note)) == 1 ? true : false);
             } while (cursor.moveToNext());
         }
 
@@ -138,7 +138,7 @@ public class GrammarStructureRepo {
                 gs.setId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Id)));
                 gs.setGrammarId(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_GrammarId)));
                 gs.setStructure(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Structure)));
-                gs.setNote(cursor.getString(cursor.getColumnIndex(GrammarStructure.KEY_Note)));
+                gs.setNote(cursor.getInt(cursor.getColumnIndex(GrammarStructure.KEY_Note)) == 1 ? true : false);
 
                 list.add(gs);
             } while (cursor.moveToNext());
@@ -155,7 +155,7 @@ public class GrammarStructureRepo {
         // get by id
         getGrammarStructureById(1);
         //insert
-        GrammarStructure insertObj = new GrammarStructure(1, "a", "b");
+        GrammarStructure insertObj = new GrammarStructure(1, "a", true);
         insert(insertObj);
         List<GrammarStructure> listInsert = getGrammarStructureBySelectQuery("SELECT * FROM " + GrammarStructure.TABLE + " ORDER BY id DESC LIMIT 1;");
         if(listInsert.size() == 1) {

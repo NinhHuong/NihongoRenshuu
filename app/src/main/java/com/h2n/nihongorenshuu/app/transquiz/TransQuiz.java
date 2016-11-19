@@ -45,7 +45,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
     Grammar grammar;
     private int isVnToJp, index;
 
-    TextView tvSenNo, tvGra, tvSen, tvCorrection, tvKey, tvKeyTitle;
+    TextView tvSenNo, tvGra, tvSen, tvCorrection, tvKey, tvKeyTitle, tvDone;
     Button btnSubmit;
     ImageButton btnPrev, btnNext;
     EditText etUserTrans;
@@ -70,6 +70,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         tvCorrection = (TextView) findViewById(R.id.tvCorrection);
         tvKey = (TextView) findViewById(R.id.tvKey);
         tvKeyTitle = (TextView) findViewById(R.id.tvKeyTitle);
+        tvDone = (TextView) findViewById(R.id.tvDone);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnPrev = (ImageButton) findViewById(R.id.btnPrev);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
@@ -183,8 +184,8 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         }catch (JSONException e) {
             e.printStackTrace();
         }
-        String no = getResources().getString(R.string.done) + " " + Integer.toString(listHis.size()) + "/" + Integer.toString(listRetrieve.size());
-        tvSenNo.setText(no);
+        tvSenNo.setText(getResources().getString(R.string.sen_no) + " " + Integer.toString(index + 1));
+        tvDone.setText(getResources().getString(R.string.done) + " " + listHis.size() + "/" + listRetrieve.size());
         tvGra.setText(" " + grammar.getName());
         if(isVnToJp == 1) {
             tvSen.setText(sentence.getVnSentence());
@@ -234,13 +235,12 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         HistoryRepo hr = new HistoryRepo();
         hr.insert(his);
 
-        String no = getResources().getString(R.string.done) + " " +  Integer.toString(listHis.size()) + "/" + Integer.toString(listRetrieve.size());
-        tvSenNo.setText(no);
+        tvDone.setText(getResources().getString(R.string.done) + " " + listHis.size() + "/" + listRetrieve.size());
     }
 
     private void loadReviewScreen() {
-        String no = getResources().getString(R.string.done) + " " +  Integer.toString(index) + "/" + Integer.toString(listRetrieve.size());
-        tvSenNo.setText(no);
+        tvSenNo.setText(getResources().getString(R.string.sen_no) + " " + Integer.toString(index + 1));
+        tvDone.setText(getResources().getString(R.string.done) + " " + listHis.size() + "/" + listRetrieve.size());
         try{
             sentence = new Sentence(listRetrieve.get(index).getJSONObject("Sentence"));
             grammar = new Grammar(listRetrieve.get(index).getJSONObject("Grammar"));
@@ -286,6 +286,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
 
     private void clearScreen() {
         tvSenNo.setText("");
+        tvDone.setText("");
         tvGra.setText("");
         tvSen.setText("");
         tvCorrection.setText("");

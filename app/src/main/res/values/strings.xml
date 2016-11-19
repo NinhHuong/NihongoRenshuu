@@ -26,4 +26,10 @@
     <string name="dialog_warning_select">Please select Grammar to Continue</string>
     <string name="rbVn2Jp">Vn -> Jp</string>
     <string name="rbJp2Vn">Jp -> Vn</string>
+
+    <!--grammar detail-->
+    <string name="structure">Structure</string>
+    <string name="explain">Explain</string>
+    <string name="note">Note</string>
+
 </resources>

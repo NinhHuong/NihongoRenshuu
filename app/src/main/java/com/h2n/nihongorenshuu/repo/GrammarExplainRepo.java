@@ -20,12 +20,12 @@ public class GrammarExplainRepo {
         ContentValues values = new ContentValues();
         values.put(GrammarExplain.KEY_StructureId, ge.getGrammarStructureId());
         values.put(GrammarExplain.KEY_Explaination, ge.getExplaination());
-        values.put(GrammarExplain.KEY_Note, ge.getNote());
+        values.put(GrammarExplain.KEY_Note, ge.getNote() ? 1 : 0);
 
         //insert
         int result = (int)db.insert(GrammarExplain.TABLE, null, values);
 
-        //getId inserted
+        /*//getId inserted
         int insertedId = -1;
         if(result != -1) {
             String selectQuery = "SELECT * from SQLITE_SEQUENCE WHERE name = \"" + GrammarExplain.TABLE + "\"";
@@ -36,9 +36,9 @@ public class GrammarExplainRepo {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-        }
+        }*/
         DatabaseManager.getInstance().closeDatabase();
-        return insertedId;
+        return result;
     }
 
     public int update(GrammarExplain ge) {
@@ -46,7 +46,7 @@ public class GrammarExplainRepo {
         ContentValues values = new ContentValues();
         values.put(GrammarExplain.KEY_StructureId, ge.getGrammarStructureId());
         values.put(GrammarExplain.KEY_Explaination, ge.getExplaination());
-        values.put(GrammarExplain.KEY_Note, ge.getNote());
+        values.put(GrammarExplain.KEY_Note, ge.getNote() ? 1 : 0);
 
         //update
         int result = (int)db.update(GrammarExplain.TABLE, values, GrammarExplain.KEY_Id + " = ?", new String[]{String.valueOf(ge.getId())});
@@ -85,7 +85,7 @@ public class GrammarExplainRepo {
                 ge.setId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Id)));
                 ge.setGrammarStructureId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_StructureId)));
                 ge.setExplaination(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Explaination)));
-                ge.setNote(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Note)));
+                ge.setNote(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Note)) == 1 ? true : false);
 
                 list.add(ge);
             } while (cursor.moveToNext());
@@ -112,7 +112,7 @@ public class GrammarExplainRepo {
                 ge.setId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Id)));
                 ge.setGrammarStructureId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_StructureId)));
                 ge.setExplaination(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Explaination)));
-                ge.setNote(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Note)));
+                ge.setNote(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Note)) == 1 ? true : false);
             } while (cursor.moveToNext());
         }
 
@@ -137,7 +137,7 @@ public class GrammarExplainRepo {
                 ge.setId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Id)));
                 ge.setGrammarStructureId(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_StructureId)));
                 ge.setExplaination(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Explaination)));
-                ge.setNote(cursor.getString(cursor.getColumnIndex(GrammarExplain.KEY_Note)));
+                ge.setNote(cursor.getInt(cursor.getColumnIndex(GrammarExplain.KEY_Note)) == 1 ? true : false);
 
                 list.add(ge);
             } while (cursor.moveToNext());
@@ -154,7 +154,7 @@ public class GrammarExplainRepo {
         //get by id
         getGrammarExplainById(1);
         //insert
-        GrammarExplain insertObj = new GrammarExplain(1, "a", "b");
+        GrammarExplain insertObj = new GrammarExplain(1, "a", true);
         insert(insertObj);
         List<GrammarExplain> listInsert = getGrammarExplainBySelectQuery("SELECT * FROM " + GrammarExplain.TABLE + " ORDER BY id DESC LIMIT 1;");
         if(listInsert.size() == 1) {
