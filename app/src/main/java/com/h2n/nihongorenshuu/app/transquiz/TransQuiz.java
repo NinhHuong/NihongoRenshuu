@@ -173,7 +173,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
             clearScreen();
             loadReviewScreen();
         } else if(view == tvGra) {
-            goToGrammarDetail(grammar.getId());
+            goToGrammarDetail(grammar.getId(), sentence.getId());
         }
     }
 
@@ -276,10 +276,11 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         tvKeyTitle.setVisibility(View.VISIBLE);
     }
 
-    private void goToGrammarDetail(int graId) {
+    private void goToGrammarDetail(int graId, int sen_id) {
         Intent i = new Intent(this, GrammarDetail.class);
         Bundle b = new Bundle();
         b.putInt("grammar_id", graId);
+        b.putInt("sentence_id", sen_id);
         i.putExtras(b);
         startActivity(i);
     }

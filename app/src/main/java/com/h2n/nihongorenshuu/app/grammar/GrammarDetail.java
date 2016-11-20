@@ -1,11 +1,10 @@
 package com.h2n.nihongorenshuu.app.grammar;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.entity.GrammarExplain;
 import com.h2n.nihongorenshuu.entity.GrammarStructure;
 import com.h2n.nihongorenshuu.entity.Sentence;
-import com.h2n.nihongorenshuu.extendObject.GrammarDetailContainer;
+import com.h2n.nihongorenshuu.extendObject.GrammarStructureAdapter;
 import com.h2n.nihongorenshuu.repo.GrammarExplainRepo;
 import com.h2n.nihongorenshuu.repo.GrammarRepo;
 import com.h2n.nihongorenshuu.repo.GrammarStructureRepo;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ninhh on 11/12/2016.
@@ -32,16 +32,17 @@ import java.util.List;
 
 public class GrammarDetail extends AppCompatActivity {
 
-    TextView tvGra;
-    ExpandableListView explvlist;
-//    GrammarDetailContainer gdContainer;
-    HashMap<String, HashMap<String, List<Sentence>>> strucData = new HashMap<>();
-    List<String> listStruc = new ArrayList<>();
+    private TextView tvGra;
+    private Button btnBack;
+    private ExpandableListView graDetail;
+    private List<String> listStrucHeader = new ArrayList<>();
+    private Map<String, List<String>> explainData = new HashMap<>();
+    private Map<String, List<Sentence>> sentenceData = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.grammar_detail);
+        setContentView(R.layout.gra_detail);
 
         DatabaseHelper dbhelper = new DatabaseHelper();
         try {
@@ -51,52 +52,52 @@ public class GrammarDetail extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Bundle b = getIntent().getExtras();
-//        int grammar_id = b.getInt("grammar_id");
-        int grammar_id = 5;
         tvGra = (TextView) findViewById(R.id.tvGra);
-        explvlist = (ExpandableListView)findViewById(R.id.parentLevel);
+        btnBack = (Button) findViewById(R.id.btnBack);
+        graDetail = (ExpandableListView)findViewById(R.id.graDetail);
+
+        Bundle b = getIntent().getExtras();
+        int grammar_id = b.getInt("grammar_id");
+        int sentence_id = b.getInt("sentence_id");
 
         GrammarRepo gr = new GrammarRepo();
         Grammar gra = gr.getGrammarById(grammar_id);
         tvGra.setText(gra.getName());
 
-        prepairData(grammar_id);
-        explvlist.setAdapter(new GrammarDetailContainer(this, strucData, listStruc));
-
-        explvlist.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                /*Intent i = new Intent(GrammarListReview.this, GrammarDetail.class);
-                Bundle b = new Bundle();
-                b.putInt("grammar_id", ((Grammar) hashGrammar.get(listUnit.get(groupPosition)).get(childPosition)).getId());
-                i.putExtras(b);
-                startActivity(i);*/
-                showMessage("test", parent.toString() + ", " + groupPosition + ", " + childPosition);
-                return false;
-            }
-        });
+        prepairData(grammar_id, sentence_id);
+        GrammarStructureAdapter gsa = new GrammarStructureAdapter(this, listStrucHeader, explainData, sentenceData);
+        graDetail.setAdapter(gsa);
     }
 
-    private void prepairData(int graId){
+    private void prepairData(int graId, int sentence_id){
         GrammarStructureRepo gsr = new GrammarStructureRepo();
         GrammarExplainRepo ger = new GrammarExplainRepo();
         SentenceRepo sr = new SentenceRepo();
         List<GrammarStructure> listStructure = gsr.getGrammarStructureBySelectQuery("WHERE " + GrammarStructure.KEY_GrammarId + " = " + graId);
         for(GrammarStructure gs : listStructure) {
-            HashMap<String, List<Sentence>> mapExplain = new HashMap<>();
             List<GrammarExplain> listExplain = ger.getGrammarExplainBySelectQuery("WHERE " + GrammarExplain.KEY_StructureId + " = " + gs.getId());
-
+            List<String> listExplainHeader = new ArrayList<>();
             for(GrammarExplain ge : listExplain) {
-                List<Sentence> listSentence = sr.getSentenceBySelectQuery("WHERE " + Sentence.KEY_GrammarExplainId + " = " + ge.getId());
+                List<Sentence> listSentence = new ArrayList<>();
+                if(sentence_id == 0) {
+                    listSentence = sr.getSentenceBySelectQuery("WHERE " + Sentence.KEY_GrammarExplainId + " = " + ge.getId());
+                } else {
+                    btnBack.setText(getResources().getString(R.string.btnClose));
+                    listSentence = sr.getSentenceBySelectQuery("WHERE " + Sentence.KEY_GrammarExplainId + " = " + ge.getId() +
+                            " AND " + Sentence.KEY_Id + " != " + sentence_id);
+                }
 
-                mapExplain.put(ge.getExplaination(), listSentence);
+                sentenceData.put(ge.getExplaination(), listSentence);
+                listExplainHeader.add(ge.getExplaination());
             }
 
-            strucData.put(gs.getStructure(), mapExplain);
-            listStruc.add(gs.getStructure());
+            explainData.put(gs.getStructure(), listExplainHeader);
+            listStrucHeader.add(gs.getStructure());
         }
+    }
+
+    public void btnBackOnClick(View view) {
+        this.finish();
     }
 
     public void showMessage(String title, String message) {
