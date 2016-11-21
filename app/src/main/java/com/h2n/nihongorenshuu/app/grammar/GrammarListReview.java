@@ -22,7 +22,6 @@ import java.util.List;
  */
 
 public class GrammarListReview extends AppCompatActivity {
-//    DatabaseHelper dh = new DatabaseHelper(this);
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -37,11 +36,14 @@ public class GrammarListReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expandable_list_view);
 
+        Bundle b = getIntent().getExtras();
+        level = b.getInt("level");
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         gr_detail_title = (TextView) findViewById(R.id.gr_list_title);
 
         prepareListData();
-        gr_detail_title.setText(getResources().getString(R.string.gr_list_title) + " " + level);
+        gr_detail_title.setText(getResources().getString(R.string.gr_list_title) + " " + "N" + level);
 
         listAdapter = new ExpandableListAdapter(this, listUnit, hashGrammar);
         expListView.setAdapter(listAdapter);
@@ -94,7 +96,6 @@ public class GrammarListReview extends AppCompatActivity {
      * Preparing the list data
      */
     private void prepareListData() {
-        level = 3;
         GrammarRepo gr = new GrammarRepo();
         String query = "WHERE " + Grammar.KEY_Level + " = " + level;
         List<Grammar> listGrammar = gr.getGrammarBySelectQuery(query);

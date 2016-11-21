@@ -308,4 +308,9 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         builder.setPositiveButton("OK", null);
         builder.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
 }

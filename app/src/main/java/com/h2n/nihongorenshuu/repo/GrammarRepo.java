@@ -150,6 +150,33 @@ public class GrammarRepo {
         return list;
     }
 
+    public List<Grammar> getGrammarByQuery(String query){
+
+        List<Grammar> list = new ArrayList<Grammar>();
+
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Grammar gr = new Grammar();
+                gr.setId(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Id)));
+                gr.setLevel(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Level)));
+                gr.setName(cursor.getString(cursor.getColumnIndex(Grammar.KEY_Name)));
+                gr.setUnit(cursor.getInt(cursor.getColumnIndex(Grammar.KEY_Unit)));
+
+                list.add(gr);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+        System.out.println("get success " + list.size() + " from " + Grammar.TABLE);
+
+        return list;
+    }
+
+
     public void test(){
         // get by id
         getGrammarById(1);

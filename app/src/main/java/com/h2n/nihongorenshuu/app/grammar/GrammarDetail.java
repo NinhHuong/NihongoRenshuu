@@ -33,7 +33,7 @@ import java.util.Map;
 public class GrammarDetail extends AppCompatActivity {
 
     private TextView tvGra;
-    private Button btnBack;
+    /*private Button btnBack;*/
     private ExpandableListView graDetail;
     private List<String> listStrucHeader = new ArrayList<>();
     private Map<String, List<String>> explainData = new HashMap<>();
@@ -53,7 +53,7 @@ public class GrammarDetail extends AppCompatActivity {
         }
 
         tvGra = (TextView) findViewById(R.id.tvGra);
-        btnBack = (Button) findViewById(R.id.btnBack);
+        /*btnBack = (Button) findViewById(R.id.btnBack);*/
         graDetail = (ExpandableListView)findViewById(R.id.graDetail);
 
         Bundle b = getIntent().getExtras();
@@ -82,7 +82,7 @@ public class GrammarDetail extends AppCompatActivity {
                 if(sentence_id == 0) {
                     listSentence = sr.getSentenceBySelectQuery("WHERE " + Sentence.KEY_GrammarExplainId + " = " + ge.getId());
                 } else {
-                    btnBack.setText(getResources().getString(R.string.btnClose));
+                    /*btnBack.setText(getResources().getString(R.string.btnClose));*/
                     listSentence = sr.getSentenceBySelectQuery("WHERE " + Sentence.KEY_GrammarExplainId + " = " + ge.getId() +
                             " AND " + Sentence.KEY_Id + " != " + sentence_id);
                 }
@@ -96,9 +96,9 @@ public class GrammarDetail extends AppCompatActivity {
         }
     }
 
-    public void btnBackOnClick(View view) {
+    /*public void btnBackOnClick(View view) {
         this.finish();
-    }
+    }*/
 
     public void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -106,5 +106,10 @@ public class GrammarDetail extends AppCompatActivity {
         builder.setMessage(message);
         builder.setPositiveButton("OK", null);
         builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

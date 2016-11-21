@@ -11,16 +11,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.h2n.nihongorenshuu.MainActivity;
 import com.h2n.nihongorenshuu.R;
 import com.h2n.nihongorenshuu.database.DatabaseHelper;
 import com.h2n.nihongorenshuu.entity.Grammar;
@@ -43,6 +47,7 @@ public class TransQuizHome extends AppCompatActivity {
     private HashMap<CbGrammarUnit, List<CbGrammarItem>> hashGrammar;
     private Button btnStart, btnContinue;
     private RadioGroup rgTransOption;
+    TextView listGraTitle;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -57,16 +62,16 @@ public class TransQuizHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trans_quiz_home);
 
-        DatabaseHelper dbhelper = new DatabaseHelper();
-        try {
-            dbhelper.createDatabase();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        Bundle b = getIntent().getExtras();
+        level = b.getInt("level");
         btnStart = (Button) findViewById(R.id.btnStart);
         btnContinue = (Button) findViewById(R.id.btnContinue);
         rgTransOption = (RadioGroup) findViewById(R.id.rgTransOption);
+        listGraTitle = (TextView) findViewById(R.id.list_gra_title);
+        listGraTitle.setText(getResources().getString(R.string.gr_list_title) + " " + "N" + level);
 
         initViews();
 
@@ -158,7 +163,6 @@ public class TransQuizHome extends AppCompatActivity {
                 b.putInt("isVn2Jp", 0);
                 shr.insertIsVn2Jp(0);
             }
-//            b.putString("level", level);
             b.putIntegerArrayList("listSelectedGra", listSelectedGra);
             i.putExtras(b);
             startActivity(i);
@@ -232,7 +236,6 @@ public class TransQuizHome extends AppCompatActivity {
      * Preparing the list data
      */
     private void prepareListData() {
-        level = 3;
         GrammarRepo gr = new GrammarRepo();
         String query = "WHERE " + Grammar.KEY_Level + " = " + level;
         List<Grammar> listGrammar = gr.getGrammarBySelectQuery(query);
@@ -257,7 +260,6 @@ public class TransQuizHome extends AppCompatActivity {
      * Preparing the list data
      */
     private void prepareListDataToContinue(List<Integer> listGra) {
-        level = 3;
         GrammarRepo gr = new GrammarRepo();
         String query = "WHERE " + Grammar.KEY_Level + " = " + level;
         List<Grammar> listGrammar = gr.getGrammarBySelectQuery(query);
@@ -302,4 +304,37 @@ public class TransQuizHome extends AppCompatActivity {
         builder.setPositiveButton("OK", null);
         builder.show();
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                finish();
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
 }

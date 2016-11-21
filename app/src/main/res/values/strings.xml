@@ -33,5 +33,22 @@
     <string name="note">Note</string>
     <string name="btnBack">Back</string>
     <string name="btnClose">Close</string>
+    <!--test tool bar-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!---->
+    <string name="contact">nihongo.renshuu.h2n@gmail.com</string>
+    <string name="features">Features</string>
+    <string name="gra_review">Grammar Review</string>
+    <string name="report">Report</string>
+    <string name="transquiz">Translation Quiz</string>
+    <string name="level">Level:</string>
+
+    <string name="n5">N5</string>
+    <string name="n4">N4</string>
+    <string name="n3">N3</string>
 
 </resources>

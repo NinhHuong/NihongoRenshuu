@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:orientation="vertical">
+    android:layout_marginLeft="@dimen/horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginBottom="@dimen/vertical_margin"
+    android:layout_marginTop="@dimen/vertical_margin"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:orientation="horizontal"
@@ -35,7 +37,7 @@
         android:layout_weight="10"
         android:groupIndicator="@null"/>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +51,7 @@
             android:gravity="center"
             android:onClick="btnBackOnClick"
             android:id="@+id/btnBack" />
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 </LinearLayout>

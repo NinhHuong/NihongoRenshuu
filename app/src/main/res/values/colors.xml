@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFCC00</color>
+    <color name="colorPrimary">#6600CC</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -13,6 +13,8 @@
     <color name="gra_detail">#303F9F</color>
 
     <!---->
-    <color name="list_group">#6600CC</color>
+    <color name="list_group">#f9f93d</color>
     <color name="list_item">#000000</color>
+    <!---->
+    <color name="nar_bar">#6600CC</color>
 </resources>
