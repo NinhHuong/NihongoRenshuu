@@ -3,6 +3,7 @@ package com.h2n.nihongorenshuu.extendObject;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,9 +96,12 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.gra_detail_structure, parent, false);
         }
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.strucHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.strucHeader);
+        ImageView struc_indicator = (ImageView) convertView.findViewById(R.id.struc_indicator);
+        if(explainData.get(listStrucHeader.get(groupPosition)).size() == 0) {
+            struc_indicator.setVisibility(View.INVISIBLE);
+        }
+//        lblListHeader.setTypeface(null, Typeface.BOLD);
         if(listStrucHeader.size() == 1) {
             lblListHeader.setText(mContext.getResources().getString(R.string.structure) + ":\n" + headerTitle);
         } else {
@@ -144,17 +148,17 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
                                  boolean isLastChild, View convertView, ViewGroup parent)
         {
             final String childText = (String) getChild(groupPosition, childPosition);
-
+/*
             if (convertView == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.gra_detail_sentence, parent, false);
-            }
-            TextView txtListChild = (TextView) convertView
-                    .findViewById(R.id.sentence);
+            }*/
+            TextView txtListChild = new TextView(mContext);
             txtListChild.setTextSize(14);
+            txtListChild.setPadding(70, 0, 0, 0);
             txtListChild.setText(childText);
-            return convertView;
+            return txtListChild;
         }
         @Override
         public int getChildrenCount(int groupPosition)
@@ -191,6 +195,10 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
                 convertView = layoutInflater.inflate(R.layout.gra_detail_explain, parent, false);
             }
             TextView lblListHeader = (TextView) convertView.findViewById(R.id.explainHeader);
+            ImageView explain_indicator = (ImageView) convertView.findViewById(R.id.explain_indicator);
+            if(getChildrenCount(groupPosition) == 0) {
+                explain_indicator.setVisibility(View.INVISIBLE);
+            }
             if(listExplainHeader.size() == 1) {
                 lblListHeader.setText(mContext.getResources().getString(R.string.explain) + ":\n" + headerTitle);
             } else {
@@ -222,6 +230,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
         }
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(500, MeasureSpec.AT_MOST);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(960, MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }

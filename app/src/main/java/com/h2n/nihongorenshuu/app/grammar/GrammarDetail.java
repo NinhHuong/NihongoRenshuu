@@ -62,7 +62,7 @@ public class GrammarDetail extends AppCompatActivity {
 
         GrammarRepo gr = new GrammarRepo();
         Grammar gra = gr.getGrammarById(grammar_id);
-        tvGra.setText(gra.getName());
+        tvGra.setText(" " + gra.getName());
 
         prepairData(grammar_id, sentence_id);
         GrammarStructureAdapter gsa = new GrammarStructureAdapter(this, listStrucHeader, explainData, sentenceData);

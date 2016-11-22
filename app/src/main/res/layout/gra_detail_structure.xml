@@ -6,7 +6,7 @@
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
             android:src="@drawable/group_statelist"
-            android:id="@+id/explist_indicator"
+            android:id="@+id/struc_indicator"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:layout_width="20px"

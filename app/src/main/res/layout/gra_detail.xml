@@ -17,7 +17,8 @@
             android:text="@string/gra_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/gr_detail_title"/>
+            android:id="@+id/gr_detail_title"
+            android:textSize="18dp"/>
 
         <TextView
             android:text="@string/gra"
@@ -26,7 +27,8 @@
             android:layout_gravity="left"
             android:textStyle="bold"
             android:id="@+id/tvGra"
-            android:textColor="@color/content" />
+            android:textColor="@color/content"
+            android:textSize="18dp" />
     </LinearLayout>
 
     <ExpandableListView
@@ -36,22 +38,5 @@
         android:scrollbars = "vertical"
         android:layout_weight="10"
         android:groupIndicator="@null"/>
-
-    <!--<LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1">
-
-        <Button
-            android:text="@string/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="btnBackOnClick"
-            android:id="@+id/btnBack" />
-    </LinearLayout>-->
-
 
 </LinearLayout>

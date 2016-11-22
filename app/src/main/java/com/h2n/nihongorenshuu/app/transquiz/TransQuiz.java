@@ -20,7 +20,6 @@ import com.h2n.nihongorenshuu.entity.GrammarStructure;
 import com.h2n.nihongorenshuu.entity.History;
 import com.h2n.nihongorenshuu.entity.Sentence;
 import com.h2n.nihongorenshuu.repo.HistoryRepo;
-import com.h2n.nihongorenshuu.repo.SelectedHistoryRepo;
 import com.h2n.nihongorenshuu.repo.SentenceRepo;
 
 
@@ -160,15 +159,9 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
                     loadNewSentence();
                 }
             } else {
+                JSONObject temp = listRetrieve.get(index);
                 listRetrieve.remove(index);
-                JSONObject json = new JSONObject();
-                try {
-                    json.put("Sentence", sentence);
-                    json.put("Grammar", grammar);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                listRetrieve.add(json);
+                listRetrieve.add(temp);
                 loadNewSentence();
             }
         } else if (view == btnPrev) {
