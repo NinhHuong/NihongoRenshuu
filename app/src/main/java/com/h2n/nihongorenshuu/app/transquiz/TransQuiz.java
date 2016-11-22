@@ -55,6 +55,9 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trans_quiz);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         //get selected grammarId from TransQuizHome
         Bundle b = getIntent().getExtras();
         isVnToJp = b.getInt("isVn2Jp");

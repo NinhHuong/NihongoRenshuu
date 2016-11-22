@@ -4,13 +4,13 @@
     android:orientation="horizontal"
     android:paddingLeft="20dp">
 
-    <!--<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/explist_indicator"
-        android:layout_width="30px"
-        android:layout_height="30px"
+        android:layout_width="20px"
+        android:layout_height="20px"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:src="@drawable/group_statelist" />-->
+        android:src="@drawable/group_statelist" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/explainHeader"

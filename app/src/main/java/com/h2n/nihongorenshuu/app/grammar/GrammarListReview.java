@@ -35,6 +35,9 @@ public class GrammarListReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expandable_list_view);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         Bundle b = getIntent().getExtras();
         level = b.getInt("level");
 

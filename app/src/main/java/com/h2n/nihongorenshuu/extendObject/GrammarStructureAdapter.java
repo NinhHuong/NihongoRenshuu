@@ -197,6 +197,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
                 lblListHeader.setText(mContext.getResources().getString(R.string.explain) + " " +
                         String.valueOf(groupPosition + 1) + ":\n" + headerTitle);
             }
+            lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setTextSize(14);
             return convertView;
         }
@@ -219,10 +220,8 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
             super(context);
             this.view = view;
         }
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-        {
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(500, MeasureSpec.EXACTLY);
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(600, MeasureSpec.AT_MOST);
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(500, MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }

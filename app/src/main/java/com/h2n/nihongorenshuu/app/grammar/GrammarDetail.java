@@ -50,6 +50,8 @@ public class GrammarDetail extends AppCompatActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         tvGra = (TextView) findViewById(R.id.tvGra);
         graDetail = (ExpandableListView)findViewById(R.id.graDetail);
