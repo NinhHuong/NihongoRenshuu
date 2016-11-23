@@ -17,4 +17,8 @@
     <color name="list_item">#000000</color>
     <!---->
     <color name="nar_bar">#6600CC</color>
+    <!---->
+    <color name="structure">#4d2600</color>
+    <color name="explain">#C35617</color>
+    <color name="sentence">#000000</color>
 </resources>

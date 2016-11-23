@@ -148,14 +148,9 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
                                  boolean isLastChild, View convertView, ViewGroup parent)
         {
             final String childText = (String) getChild(groupPosition, childPosition);
-/*
-            if (convertView == null) {
-                LayoutInflater layoutInflater = (LayoutInflater) this.mContext
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.gra_detail_sentence, parent, false);
-            }*/
             TextView txtListChild = new TextView(mContext);
             txtListChild.setTextSize(14);
+            txtListChild.setTextColor(mContext.getResources().getColor(R.color.sentence));
             txtListChild.setPadding(70, 0, 0, 0);
             txtListChild.setText(childText);
             return txtListChild;
@@ -229,7 +224,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
             this.view = view;
         }
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(500, MeasureSpec.AT_MOST);
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(470, MeasureSpec.AT_MOST);
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(960, MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }

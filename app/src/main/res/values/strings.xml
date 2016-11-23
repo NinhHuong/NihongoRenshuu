@@ -1,51 +1,44 @@
 <resources>
     <string name="app_name">Nihongo Renshuu</string>
-    <string name="unit">Unit</string>
-    <string name="gr_list_title">Grammars of Level</string>
+    <string name="unit">Bài</string>
+    <string name="gr_list_title">Cấp độ ngữ pháp</string>
 
     <!--Translation quiz screen-->
-    <string name="btnStart">Start</string>
-    <string name="btnStartOver">Start Over</string>
-    <string name="btnContinue">Continue</string>
-    <string name="sen_no">Sentence</string>
-    <string name="gra_title">Grammar: </string>
-    <string name="gra">Grammar Content</string>
-    <string name="sen_content">Sentence content</string>
-    <string name="user_trans_title">Your translation</string>
-    <string name="answer_hint">Enter your answer</string>
+    <string name="btnStart">Bắt đầu</string>
+    <string name="btnStartOver">Làm lại từ đầu</string>
+    <string name="btnContinue">Tiếp tục</string>
+    <string name="sen_no">Câu</string>
+    <string name="gra_title">Ngữ pháp: </string>
+    <string name="gra">Chi tiết về ngữ pháp</string>
+    <string name="sen_content">Câu cần dịch</string>
+    <string name="user_trans_title">Bản dịch của bạn</string>
+    <string name="answer_hint">Nhập câu trả lời …</string>
     <string name="correction">Correction the answer of user</string>
-    <string name="btnSubmit">Submit</string>
-    <string name="key_title">Key</string>
+    <string name="btnSubmit">Xong</string>
+    <string name="key_title">Đáp án</string>
     <string name="key">Key</string>
-    <string name="done">Done: </string>
+    <string name="done">Đã làm: </string>
 
-    <string name="dialog_title_warning">Warning</string>
-    <string name="dialog_title_guide">Instruction</string>
-    <string name="dialog_guide_instruction">Please select grammars that you want to review.</string>
-    <string name="dialog_warning_empty">Please enter your translation</string>
-    <string name="dialog_warning_select">Please select Grammar to Continue</string>
+    <string name="dialog_title_warning">Chú ý</string>
+    <string name="dialog_title_guide">Hướng dẫn</string>
+    <string name="dialog_guide_instruction">Chọn ngữ pháp mà bạn muốn học.</string>
+    <string name="dialog_warning_empty">Hãy nhập câu trả lời của bạn</string>
+    <string name="dialog_warning_select">Hãy chọn ngữ pháp mà bạn muốn học</string>
     <string name="rbVn2Jp">Vn -> Jp</string>
     <string name="rbJp2Vn">Jp -> Vn</string>
 
     <!--grammar detail-->
-    <string name="structure">Structure</string>
-    <string name="explain">Explain</string>
-    <string name="note">Note</string>
+    <string name="structure">Cấu tạo</string>
+    <string name="explain">Giải thích</string>
+    <string name="note">Chú ý</string>
     <string name="btnBack">Back</string>
     <string name="btnClose">Close</string>
-    <!--test tool bar-->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    
+    <!--Home screen-->
+    <string name="transquiz">Làm bài</string>
+    <string name="gra_review">Ôn tập ngữ pháp </string>
 
-    <string name="action_settings">Settings</string>
-
-    <!---->
-    <string name="contact">nihongo.renshuu.h2n@gmail.com</string>
-    <string name="features">Features</string>
-    <string name="gra_review">Grammar Review</string>
-    <string name="report">Report</string>
-    <string name="transquiz">Translation Quiz</string>
-    <string name="level">Level:</string>
+    <string name="action_settings">Cài đặt</string>
 
     <string name="n5">N5</string>
     <string name="n4">N4</string>

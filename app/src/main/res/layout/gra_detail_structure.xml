@@ -19,7 +19,7 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:gravity="center_vertical"
             android:paddingLeft="0dp"
-            android:textColor="#6600CC"
+            android:textColor="@color/structure"
             android:background="?android:attr/activatedBackgroundIndicator"
             android:minHeight="?android:attr/listPreferredItemHeightSmall" />
     </LinearLayout>

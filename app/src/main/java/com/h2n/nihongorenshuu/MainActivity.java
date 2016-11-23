@@ -34,13 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseHelper dbHelper = new DatabaseHelper();
-        try{
-            dbHelper.createDatabase();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 

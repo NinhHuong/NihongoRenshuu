@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.h2n.nihongorenshuu.app.transquiz.TransQuizHome;
+import com.h2n.nihongorenshuu.database.DatabaseHelper;
 import com.h2n.nihongorenshuu.entity.Grammar;
 import com.h2n.nihongorenshuu.repo.GrammarRepo;
 import com.h2n.nihongorenshuu.repo.SelectedHistoryRepo;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,6 +24,13 @@ public class StartupActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //init database
+        DatabaseHelper dbHelper = new DatabaseHelper();
+        try{
+            dbHelper.createDatabase();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
 
         SelectedHistoryRepo shr = new SelectedHistoryRepo();
         List<Integer> list =  shr.getAllSelectedGrammar();
