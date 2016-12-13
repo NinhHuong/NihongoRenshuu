@@ -13,6 +13,8 @@ import android.widget.*;
 import com.h2n.nihongorenshuu.R;
 import com.h2n.nihongorenshuu.app.grammar.GrammarDetail;
 import com.h2n.nihongorenshuu.entity.Grammar;
+import com.h2n.nihongorenshuu.entity.GrammarExplain;
+import com.h2n.nihongorenshuu.entity.GrammarStructure;
 import com.h2n.nihongorenshuu.entity.Sentence;
 
 import java.util.ArrayList;
@@ -28,10 +30,10 @@ import java.util.Map;
 
 public class GrammarStructureAdapter extends BaseExpandableListAdapter {
     private final Context mContext;
-    private final List<String> listStrucHeader;
-    private final Map<String, List<String>> explainData;
+    private final List<GrammarStructure> listStrucHeader;
+    private final Map<String, List<GrammarExplain>> explainData;
     private final Map<String, List<Sentence>> sentenceData;
-    public GrammarStructureAdapter(Context mContext, List<String> listStrucHeader, Map<String, List<String>> explainData,
+    public GrammarStructureAdapter(Context mContext, List<GrammarStructure> listStrucHeader, Map<String, List<GrammarExplain>> explainData,
                                    Map<String, List<Sentence>> sentenceData) {
         this.mContext = mContext;
         this.listStrucHeader = listStrucHeader;
@@ -50,7 +52,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final CustomExpListView secondLevelExpListView = new CustomExpListView(this.mContext, convertView);
-        final String parentNode = (String) getGroup(groupPosition);
+        final String parentNode = String.valueOf(((GrammarStructure) getGroup(groupPosition)).getId());
         secondLevelExpListView.setAdapter(new GrammarExplainAdapter(this.mContext, explainData.get(parentNode), sentenceData));
         secondLevelExpListView.setGroupIndicator(null);
 
@@ -58,8 +60,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 String seletectText = ((TextView) v).getText().toString().toLowerCase();
-                List<String> listExplainHeader = new ArrayList<String>(explainData.keySet());
-                Sentence sen = sentenceData.get(explainData.get(parentNode).get(groupPosition)).get(childPosition);
+                Sentence sen = sentenceData.get(String.valueOf(explainData.get(parentNode).get(groupPosition).getId())).get(childPosition);
                 if(seletectText.trim().equals(sen.getJpSentence().trim())) {
                     ((TextView) v).setText(sen.getVnSentence());
                 } else {
@@ -90,19 +91,19 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        String headerTitle = ((GrammarStructure) getGroup(groupPosition)).getStructure();
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.gra_detail_structure, parent, false);
         }
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.strucHeader);
         ImageView struc_indicator = (ImageView) convertView.findViewById(R.id.struc_indicator);
-        if(explainData.get(listStrucHeader.get(groupPosition)).size() == 0) {
+        if(explainData.get(String.valueOf(listStrucHeader.get(groupPosition).getId())).size() == 0) {
             struc_indicator.setVisibility(View.INVISIBLE);
         }
-//        lblListHeader.setTypeface(null, Typeface.BOLD);
-        if(listStrucHeader.size() == 1) {
+        if(((GrammarStructure) getGroup(groupPosition)).getNote()) {
+            lblListHeader.setText(mContext.getResources().getString(R.string.note) + ":\n" + headerTitle);
+        } else if(listStrucHeader.size() == 1) {
             lblListHeader.setText(mContext.getResources().getString(R.string.structure) + ":\n" + headerTitle);
         } else {
             lblListHeader.setText(mContext.getResources().getString(R.string.structure) + " " +
@@ -125,9 +126,9 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
     public class GrammarExplainAdapter extends BaseExpandableListAdapter
     {
         private final Context mContext;
-        private final List<String> listExplainHeader;
+        private final List<GrammarExplain> listExplainHeader;
         private final Map<String, List<Sentence>> sentenceData;
-        public GrammarExplainAdapter(Context mContext, List<String> listExplainHeader, Map<String, List<Sentence>> sentenceData) {
+        public GrammarExplainAdapter(Context mContext, List<GrammarExplain> listExplainHeader, Map<String, List<Sentence>> sentenceData) {
             this.mContext = mContext;
             this.listExplainHeader = listExplainHeader;
             this.sentenceData = sentenceData;
@@ -135,8 +136,8 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
         @Override
         public Object getChild(int groupPosition, int childPosition)
         {
-            return this.sentenceData.get(this.listExplainHeader.get(groupPosition))
-                    .get(childPosition).getJpSentence();
+            return this.sentenceData.get(String.valueOf(this.listExplainHeader.get(groupPosition).getId()))
+                    .get(childPosition);
         }
         @Override
         public long getChildId(int groupPosition, int childPosition)
@@ -147,7 +148,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
         public View getChildView(int groupPosition, int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent)
         {
-            final String childText = (String) getChild(groupPosition, childPosition);
+            final String childText = ((Sentence) getChild(groupPosition, childPosition)).getJpSentence();
             TextView txtListChild = new TextView(mContext);
             txtListChild.setTextSize(14);
             txtListChild.setTextColor(mContext.getResources().getColor(R.color.sentence));
@@ -159,7 +160,7 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
         public int getChildrenCount(int groupPosition)
         {
             try {
-                return this.sentenceData.get(this.listExplainHeader.get(groupPosition)).size();
+                return this.sentenceData.get(String.valueOf(this.listExplainHeader.get(groupPosition).getId())).size();
             } catch (Exception e) {
                 return 0;
             }
@@ -183,10 +184,9 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
         public View getGroupView(int groupPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent)
         {
-            String headerTitle = (String) getGroup(groupPosition);
+            String headerTitle = ((GrammarExplain) getGroup(groupPosition)).getExplaination();
             if (convertView == null) {
-                LayoutInflater layoutInflater = (LayoutInflater) this.mContext
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.gra_detail_explain, parent, false);
             }
             TextView lblListHeader = (TextView) convertView.findViewById(R.id.explainHeader);
@@ -194,7 +194,9 @@ public class GrammarStructureAdapter extends BaseExpandableListAdapter {
             if(getChildrenCount(groupPosition) == 0) {
                 explain_indicator.setVisibility(View.INVISIBLE);
             }
-            if(listExplainHeader.size() == 1) {
+            if(((GrammarExplain) getGroup(groupPosition)).getNote()) {
+                lblListHeader.setText(mContext.getResources().getString(R.string.note) + ":\n" + headerTitle);
+            } else if(listExplainHeader.size() == 1) {
                 lblListHeader.setText(mContext.getResources().getString(R.string.explain) + ":\n" + headerTitle);
             } else {
                 lblListHeader.setText(mContext.getResources().getString(R.string.explain) + " " +

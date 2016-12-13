@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.speech.tts.TextToSpeech;
 
 import com.h2n.nihongorenshuu.app.grammar.GrammarListReview;
 import com.h2n.nihongorenshuu.app.transquiz.TransQuizHome;
@@ -21,6 +22,7 @@ import com.h2n.nihongorenshuu.entity.Grammar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {

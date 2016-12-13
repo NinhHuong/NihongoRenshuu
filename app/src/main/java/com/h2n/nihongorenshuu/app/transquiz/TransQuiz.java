@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.speech.tts.TextToSpeech;
 
 import com.h2n.nihongorenshuu.R;
 import com.h2n.nihongorenshuu.app.grammar.GrammarDetail;
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by ninhh on 11/12/2016.
@@ -35,10 +38,7 @@ import java.util.List;
 
 public class TransQuiz extends AppCompatActivity implements View.OnClickListener{
 
-
-//    private List<Sentence> listSen = new ArrayList<>();
     private List<History> listHis = new ArrayList<>();
-//    private List<Grammar> listGra = new ArrayList<>();
     private List<JSONObject> listRetrieve = new ArrayList<>();
     Sentence sentence;
     Grammar grammar;
@@ -49,6 +49,8 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
     ImageButton btnPrev, btnNext;
     EditText etUserTrans;
     ProgressBar pbStatus;
+    ImageView ivSpeak;
+    TextToSpeech t2s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,15 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         btnNext = (ImageButton) findViewById(R.id.btnNext);
         etUserTrans = (EditText) findViewById(R.id.etUserTrans);
         pbStatus = (ProgressBar) findViewById(R.id.pbStatus);
+
+        t2s = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t2s.setLanguage(Locale.JAPANESE);
+                }
+            }
+        });
 
 //        check is Continue
         HistoryRepo hr = new HistoryRepo();
@@ -221,6 +232,8 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
 
         etUserTrans.setEnabled(false);
         tvKeyTitle.setVisibility(View.VISIBLE);
+//        ivSpeak.setVisibility(View.VISIBLE);
+//        btnSpeakOnClick(findViewById(R.id.ivSpeak));
         if(isVnToJp == 1) {
             tvKey.setText(sentence.getJpSentence());
         } else {
@@ -270,6 +283,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
 
         etUserTrans.setEnabled(false);
         tvKeyTitle.setVisibility(View.VISIBLE);
+//        ivSpeak.setVisibility(View.VISIBLE);
     }
 
     private void goToGrammarDetail(int graId, int sen_id) {
@@ -281,6 +295,11 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         startActivity(i);
     }
 
+    public void btnSpeakOnClick(View view) {
+        String toSpeak = tvKey.getText().toString().trim();
+        t2s.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
     private void clearScreen() {
         tvSenNo.setText("");
         tvDone.setText("");
@@ -288,7 +307,7 @@ public class TransQuiz extends AppCompatActivity implements View.OnClickListener
         tvSen.setText("");
         tvCorrection.setText("");
         tvKey.setText("");
-
+//        ivSpeak.setVisibility(View.INVISIBLE);
         tvKeyTitle.setVisibility(View.INVISIBLE);
         btnSubmit.setEnabled(true);
         btnPrev.setEnabled(true);

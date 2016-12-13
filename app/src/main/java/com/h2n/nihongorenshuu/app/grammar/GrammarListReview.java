@@ -1,8 +1,11 @@
 package com.h2n.nihongorenshuu.app.grammar;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.SearchView;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -20,11 +23,13 @@ import java.util.List;
  * Created by ninhh on 11/8/2016.
  */
 
-public class GrammarListReview extends AppCompatActivity {
+public class GrammarListReview extends AppCompatActivity implements SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener{
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     TextView gr_detail_title;
+    SearchView svSearch;
     private int lastExpandedPosition = -1;
     private List<String> listUnit;
     private HashMap<String, List<Grammar>> hashGrammar;
@@ -34,6 +39,13 @@ public class GrammarListReview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expandable_list_view);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        svSearch = (SearchView) findViewById(R.id.svSearch);
+        svSearch.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        svSearch.setIconifiedByDefault(false);
+        svSearch.setOnQueryTextListener(this);
+        svSearch.setOnCloseListener(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
@@ -114,6 +126,35 @@ public class GrammarListReview extends AppCompatActivity {
             }
             temp.add(gra);
             hashGrammar.put(unit, temp);
+        }
+    }
+
+    @Override
+    public boolean onClose() {
+        listAdapter.filterData("");
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        listAdapter.filterData(query);
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        listAdapter.filterData(query);
+        expandAll();
+        return false;
+    }
+
+    //method to expand all groups
+    private void expandAll() {
+        int count = listAdapter.getGroupCount();
+        for (int i = 0; i < count; i++){
+            expListView.expandGroup(i);
         }
     }
 }

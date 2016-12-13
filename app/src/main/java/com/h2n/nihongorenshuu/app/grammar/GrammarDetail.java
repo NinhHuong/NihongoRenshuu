@@ -34,8 +34,8 @@ public class GrammarDetail extends AppCompatActivity {
 
     private TextView tvGra;
     private ExpandableListView graDetail;
-    private List<String> listStrucHeader = new ArrayList<>();
-    private Map<String, List<String>> explainData = new HashMap<>();
+    private List<GrammarStructure> listStrucHeader = new ArrayList<>();
+    private Map<String, List<GrammarExplain>> explainData = new HashMap<>();
     private Map<String, List<Sentence>> sentenceData = new HashMap<>();
 
     @Override
@@ -76,7 +76,7 @@ public class GrammarDetail extends AppCompatActivity {
         List<GrammarStructure> listStructure = gsr.getGrammarStructureBySelectQuery("WHERE " + GrammarStructure.KEY_GrammarId + " = " + graId);
         for(GrammarStructure gs : listStructure) {
             List<GrammarExplain> listExplain = ger.getGrammarExplainBySelectQuery("WHERE " + GrammarExplain.KEY_StructureId + " = " + gs.getId());
-            List<String> listExplainHeader = new ArrayList<>();
+            List<GrammarExplain> listExplainHeader = new ArrayList<>();
             for(GrammarExplain ge : listExplain) {
                 List<Sentence> listSentence = new ArrayList<>();
                 if(sentence_id == 0) {
@@ -86,12 +86,12 @@ public class GrammarDetail extends AppCompatActivity {
                             " AND " + Sentence.KEY_Id + " != " + sentence_id);
                 }
 
-                sentenceData.put(ge.getExplaination(), listSentence);
-                listExplainHeader.add(ge.getExplaination());
+                sentenceData.put(String.valueOf(ge.getId()), listSentence);
+                listExplainHeader.add(ge);
             }
 
-            explainData.put(gs.getStructure(), listExplainHeader);
-            listStrucHeader.add(gs.getStructure());
+            explainData.put(String.valueOf(gs.getId()), listExplainHeader);
+            listStrucHeader.add(gs);
         }
     }
 

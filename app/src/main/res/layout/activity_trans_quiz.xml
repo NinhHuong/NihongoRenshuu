@@ -86,14 +86,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvKeyTitle"/>
 
-    <TextView
-        android:text="@string/key"
-        android:textColor="@color/key"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvKey"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+        <TextView
+            android:text="@string/key"
+            android:textColor="@color/key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvKey"
+            android:layout_weight="1" />
 
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/sound_loud_speaker"
+            android:id="@+id/ivSpeak"
+            android:layout_gravity="end"
+            android:layout_weight="0.04"
+            android:onClick="btnSpeakOnClick"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

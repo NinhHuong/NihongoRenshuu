@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.h2n.nihongorenshuu.R;
 import com.h2n.nihongorenshuu.entity.Grammar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,15 +21,19 @@ import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> _listDataHeader;
+    private List<String> _listOriginalHeader;
     private HashMap<String, List<Grammar>> _listDataChild;
+    private HashMap<String, List<Grammar>> _listOriginal;
+
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
                                  HashMap<String, List<Grammar>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
+        this._listOriginalHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this._listOriginal = listChildData;
     }
 
     @Override
@@ -106,5 +111,29 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void filterData(String query) {
+        query = query.toLowerCase();
+        _listDataChild.clear();
+        _listDataHeader.clear();
+        if(query.isEmpty()) {
+            _listDataChild = _listOriginal;
+        } else {
+            for(String unit :  _listOriginal.keySet()) {
+                List<Grammar> listGraPerUnit = _listOriginal.get(unit);
+                List<Grammar> newList = new ArrayList<>();
+                for(Grammar gra : listGraPerUnit) {
+                    if(gra.getName().toLowerCase().contains(query)) {
+                        newList.add(gra);
+                    }
+                }
+                if(newList.size() > 0) {
+                    _listDataChild.put(unit, newList);
+                    _listDataHeader.add(unit);
+                }
+            }
+            notifyDataSetChanged();
+        }
     }
 }
